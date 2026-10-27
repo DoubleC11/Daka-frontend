@@ -1,0 +1,211 @@
+- generic [active] [ref=e1]:
+  - link "跳到主要内容" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - link "AERA 首页" [ref=e4] [cursor=pointer]:
+      - /url: "#top"
+      - text: AERA
+    - navigation "主要导航" [ref=e5]:
+      - link "设计" [ref=e6] [cursor=pointer]:
+        - /url: "#design"
+      - link "影像" [ref=e7] [cursor=pointer]:
+        - /url: "#camera"
+      - link "屏幕" [ref=e8] [cursor=pointer]:
+        - /url: "#display"
+      - link "参数" [ref=e9] [cursor=pointer]:
+        - /url: "#specs"
+    - link "预约体验" [ref=e11] [cursor=pointer]:
+      - /url: "#reserve"
+  - main [ref=e14]:
+    - region [ref=e15]:
+      - generic [ref=e16]:
+        - heading "AERA ONE 轻盈，但从不轻率。" [level=1] [ref=e17]:
+          - text: AERAONE
+          - generic [ref=e18]: 轻盈，但从不轻率。
+        - paragraph [ref=e19]: 轻到忘记，亮到记得。
+        - paragraph [ref=e20]: 5.9 毫米航空钛金属机身，把旗舰性能收进更克制的轮廓。掌心第一次不必适应一部手机，而是由手机适应你。
+        - generic [ref=e21]:
+          - link "预约体验" [ref=e22] [cursor=pointer]:
+            - /url: "#reserve"
+          - link "了解 AERA Halo" [ref=e25] [cursor=pointer]:
+            - /url: "#camera"
+        - generic [ref=e26]:
+          - generic [ref=e27]: 曜石黑
+          - group "选择机身配色" [ref=e28]:
+            - button "曜石黑" [pressed] [ref=e29] [cursor=pointer]
+            - button "月岩银" [ref=e30] [cursor=pointer]
+            - button "熔光橙" [ref=e31] [cursor=pointer]
+        - generic "核心规格" [ref=e32]:
+          - generic [ref=e33]:
+            - strong [ref=e34]: 5.9 mm
+            - generic [ref=e35]: 航空钛金属机身
+          - generic [ref=e36]:
+            - strong [ref=e37]: 6.7 英寸
+            - generic [ref=e38]: 2K 自适应高刷屏
+          - generic [ref=e39]:
+            - strong [ref=e40]: 48 MP
+            - generic [ref=e41]: AERA Halo 影像系统
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - strong [ref=e44]: AERA ONE
+          - text: 钛金属系列 / 2026
+        - generic "AERA ONE 手机正面展示" [ref=e46]:
+          - generic [ref=e54]:
+            - generic [ref=e55]: 08:24
+            - paragraph [ref=e64]: 08:24
+            - paragraph [ref=e65]: 10月27日，星期一
+            - generic [ref=e66]:
+              - generic [ref=e67]:
+                - strong [ref=e68]: 上海
+                - text: 空气清透
+              - strong [ref=e69]: 21°
+        - generic [ref=e83]:
+          - text: 机身厚度
+          - strong [ref=e84]: 5.9 mm
+    - generic [aria-hidden] [ref=e85]:
+      - generic [ref=e86]: 航空钛金属 5.9 mm 178 g 2K 自适应高刷 48MP AERA Halo IP68
+      - generic [ref=e93]: 航空钛金属 5.9 mm 178 g 2K 自适应高刷 48MP AERA Halo IP68
+    - region [ref=e100]:
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - heading "把复杂， 收进 5.9 毫米。" [level=2] [ref=e103]: 把复杂，收进 5.9 毫米。
+          - paragraph [ref=e104]: 机身由一块 Grade 5 航空钛金属缓慢切削而成。更薄的边框、更轻的质量，没有牺牲结构，也没有牺牲手感。每一次握持，都更接近一支笔，而不是一台机器。
+          - generic [ref=e105]:
+            - generic [ref=e106]:
+              - strong [ref=e107]: 178 g
+              - generic [ref=e108]: 整机重量，长时间使用依然轻松
+            - generic [ref=e109]:
+              - strong [ref=e110]: Ti Grade 5
+              - generic [ref=e111]: 高强度航空钛金属中框
+            - generic [ref=e112]:
+              - strong [ref=e113]: IP68
+              - generic [ref=e114]: 日常防尘防水，从容应对天气
+            - generic [ref=e115]:
+              - strong [ref=e116]: Ceramic Shield
+              - generic [ref=e117]: 屏幕与背板双重抗刮保护
+        - generic "AERA ONE 侧面厚度展示" [ref=e118]:
+          - generic [ref=e119]: 侧视结构研究 / 钛金属一体中框
+          - generic [aria-hidden] [ref=e120]: THIN
+          - generic [ref=e122]: 5.9 mm
+          - generic [ref=e127]: AERA ONE / SIDE PROFILE
+    - region [ref=e128]:
+      - generic [ref=e129]:
+        - generic [ref=e130]:
+          - heading "夜， 原来有颜色。" [level=2] [ref=e131]: 夜，原来有颜色。
+          - paragraph [ref=e132]: 全新的 AERA Halo 影像系统，让传感器在微弱光线里仍保留颜色、层次和空气感。按下快门，不是把夜晚拍亮，而是把夜晚拍对。
+          - generic [ref=e133]:
+            - generic [ref=e134]:
+              - strong [ref=e135]: 48 MP
+              - generic [ref=e136]: 主摄像头
+            - generic [ref=e137]:
+              - strong [ref=e138]: f/1.6
+              - generic [ref=e139]: 大光圈
+            - generic [ref=e140]:
+              - strong [ref=e141]: OIS
+              - generic [ref=e142]: 传感器位移防抖
+          - link "查看完整影像参数" [ref=e143] [cursor=pointer]:
+            - /url: "#specs"
+        - generic "AERA Halo 摄像头结构展示" [ref=e146]:
+          - generic [ref=e147]: AERA OPTICS / 48 MP
+          - generic [ref=e151]:
+            - strong [ref=e152]: Halo low-light engine
+            - text: 多帧合成在按下快门前已经开始。你会得到的，是一张更接近记忆的照片。
+    - region [ref=e153]:
+      - generic [ref=e154]:
+        - generic "AERA ONE 屏幕显示效果" [ref=e155]:
+          - generic [ref=e160]:
+            - generic [ref=e161]:
+              - strong [ref=e162]: Tide / 06
+              - generic [ref=e163]: 2K · 120 Hz
+            - generic [ref=e164]:
+              - heading "看见光 移动的方式。" [level=3] [ref=e165]: 看见光移动的方式。
+              - paragraph [ref=e167]: 动态影像样张 / AERA Display Lab
+            - generic [ref=e168]:
+              - generic [ref=e169]: 3000 nit peak
+              - generic [ref=e170]: ProMotion 1-120 Hz
+          - generic [aria-hidden] [ref=e171]: "06"
+        - generic [ref=e172]:
+          - heading "每一帧， 都更接近眼睛。" [level=2] [ref=e173]: 每一帧，都更接近眼睛。
+          - paragraph [ref=e174]: 6.7 英寸 2K 全视屏，在强光下保持清晰，在暗光里减少刺激。自适应刷新率让滑动更顺，也让每一次停留更安静。
+          - generic [ref=e175]:
+            - generic [ref=e176]:
+              - strong [ref=e177]: "3000"
+              - generic [ref=e178]: nit 峰值亮度，正午户外依然清晰
+            - generic [ref=e179]:
+              - strong [ref=e180]: 1-120
+              - generic [ref=e181]: Hz 自适应刷新率，流畅与省电同时成立
+            - generic [ref=e182]:
+              - strong [ref=e183]: 2K
+              - generic [ref=e184]: 分辨率，细腻呈现文字与影像
+    - region [ref=e185]:
+      - generic [ref=e186]:
+        - generic [ref=e187]:
+          - heading "每一处， 都经得起近看。" [level=2] [ref=e188]: 每一处，都经得起近看。
+          - paragraph [ref=e189]: 从芯片到边框，从镜头到振动反馈。AERA ONE 的完整技术规格。
+        - generic [ref=e190]:
+          - generic [ref=e191]:
+            - term [ref=e192]: 显示屏
+            - definition [ref=e193]: 6.7 英寸 2K 全视屏，1-120 Hz 自适应刷新率，峰值亮度 3000 nit
+          - generic [ref=e194]:
+            - term [ref=e195]: 芯片
+            - definition [ref=e196]: AERA A1 仿生芯片，6 核中央处理器，5 核图形处理器，16 核神经网络引擎
+          - generic [ref=e197]:
+            - term [ref=e198]: 影像
+            - definition [ref=e199]: 48MP 主摄，f/1.6，OIS；12MP 超广角；12MP 3 倍长焦
+          - generic [ref=e200]:
+            - term [ref=e201]: 机身
+            - definition [ref=e202]: Grade 5 钛金属中框，Ceramic Shield 前面板，5.9 毫米，178 克
+          - generic [ref=e203]:
+            - term [ref=e204]: 电池与充电
+            - definition [ref=e205]: 全天候续航，支持 65W 有线快充与 30W 无线快充
+          - generic [ref=e206]:
+            - term [ref=e207]: 连接与防护
+            - definition [ref=e208]: 5G，Wi-Fi 7，蓝牙 5.4，NFC，IP68 防尘防水
+          - generic [ref=e209]:
+            - term [ref=e210]: 配色
+            - definition [ref=e211]: 曜石黑，月岩银，熔光橙
+    - region [ref=e212]:
+      - generic [ref=e213]:
+        - generic [ref=e214]:
+          - heading "下一部手机， 从更轻盈的一天开始。" [level=2] [ref=e215]: 下一部手机，从更轻盈的一天开始。
+          - paragraph [ref=e216]: 留下邮箱，获取 AERA ONE 的首发信息与线下体验邀请。我们会只在你需要的时候出现。
+        - generic [ref=e217]:
+          - generic [ref=e218]: 接收首发通知
+          - generic [ref=e219]:
+            - textbox "接收首发通知" [ref=e220]:
+              - /placeholder: 你的邮箱地址
+            - button "完成预约" [ref=e221] [cursor=pointer]
+          - status [ref=e224]
+  - contentinfo [ref=e225]:
+    - generic [ref=e226]:
+      - link "返回页面顶部" [ref=e227] [cursor=pointer]:
+        - /url: "#top"
+        - text: AERA
+      - generic [ref=e228]:
+        - generic [ref=e229]:
+          - strong [ref=e230]: 产品
+          - link "设计" [ref=e231] [cursor=pointer]:
+            - /url: "#design"
+          - link "影像" [ref=e232] [cursor=pointer]:
+            - /url: "#camera"
+          - link "屏幕" [ref=e233] [cursor=pointer]:
+            - /url: "#display"
+        - generic [ref=e234]:
+          - strong [ref=e235]: 了解
+          - link "技术规格" [ref=e236] [cursor=pointer]:
+            - /url: "#specs"
+          - link "预约体验" [ref=e237] [cursor=pointer]:
+            - /url: "#reserve"
+          - link "环境责任" [ref=e238] [cursor=pointer]:
+            - /url: "#top"
+        - generic [ref=e239]:
+          - strong [ref=e240]: 关注
+          - link "微信公众号" [ref=e241] [cursor=pointer]:
+            - /url: "#top"
+          - link "微博" [ref=e242] [cursor=pointer]:
+            - /url: "#top"
+          - link "小红书" [ref=e243] [cursor=pointer]:
+            - /url: "#top"
+    - generic [ref=e244]:
+      - generic [ref=e245]: © 2026 AERA Mobile. 本页面为品牌概念展示。
+      - generic [ref=e246]: 隐私政策 / 使用条款 / 无障碍声明

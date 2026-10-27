@@ -71,6 +71,22 @@ export const statsApi = {
   billTrend: (days = 30) => http.get('/stats/bill-trend', { params: { days } })
 }
 
+/* ---------------- 情侣空间 ---------------- */
+export const coupleApi = {
+  info: () => http.get('/couple'),
+  // 当前有效邀请码（不生成）；带时间戳避免浏览器缓存导致读到别的账号的旧响应
+  currentInvite: () => http.get('/couple/invite', { params: { _t: Date.now() } }),
+  // refresh=true 时作废旧码并生成新码（“重新生成”按钮）
+  invite: (refresh = false) => http.post('/couple/invite', null, { params: { refresh } }),
+  bind: (code) => http.post('/couple/bind', { code }),
+  unbind: () => http.delete('/couple'),
+  // 共同日历（右侧栏）：一个月一批，双方读写同一份
+  calendar: (month) => http.get('/couple/calendar', { params: { month, _t: Date.now() } }),
+  // content 为空字符串 = 清空这一天
+  saveCalendarDay: (d) => http.put('/couple/calendar', d),
+  removeCalendarDay: (date) => http.delete('/couple/calendar', { params: { date } })
+}
+
 /* ---------------- 数据导出（CSV 下载） ---------------- */
 export async function exportCsv(path, fallbackName) {
   const { getToken } = await import('./http')

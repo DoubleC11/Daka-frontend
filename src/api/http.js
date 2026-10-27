@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getViewUserId } from '../utils/viewUser'
 
 /**
  * 统一请求层。
@@ -12,17 +13,51 @@ const http = axios.create({
 
 const TOKEN_KEY = 'daka_token'
 
+/**
+ * 登录态按「标签页」隔离，避免同浏览器两个窗口互相顶号：
+ * - sessionStorage：本标签页自己的 token。两个窗口可以分别登录不同账号（A 看 A 的数据，B 看 B 的）；
+ * - localStorage：作为“默认账号”兜底，新开标签页可以继承上次登录，不用每次都重登。
+ * 顺序：先读本标签页，没有再回落到 localStorage 并接管。
+ */
 export function getToken() {
-  return localStorage.getItem(TOKEN_KEY) || ''
+  const own = sessionStorage.getItem(TOKEN_KEY)
+  if (own) return own
+  const fallback = localStorage.getItem(TOKEN_KEY)
+  if (fallback) {
+    sessionStorage.setItem(TOKEN_KEY, fallback)
+    return fallback
+  }
+  return ''
 }
+
 export function setToken(t) {
-  if (t) localStorage.setItem(TOKEN_KEY, t)
-  else localStorage.removeItem(TOKEN_KEY)
+  if (t) {
+    // 本标签页生效，同时更新“默认账号”（不影响其它标签页已加载的 sessionStorage）
+    sessionStorage.setItem(TOKEN_KEY, t)
+    localStorage.setItem(TOKEN_KEY, t)
+  } else {
+    sessionStorage.removeItem(TOKEN_KEY)
+    localStorage.removeItem(TOKEN_KEY)
+  }
 }
 
 http.interceptors.request.use((cfg) => {
   const t = getToken()
   if (t) cfg.headers.Authorization = `Bearer ${t}`
+  // 情侣空间：查看对方数据时，GET 请求统一带上 viewUserId（后端校验绑定关系）
+  const view = getViewUserId()
+  const method = String(cfg.method || 'get').toLowerCase()
+  if (view && method === 'get') {
+    cfg.params = { ...(cfg.params || {}), viewUserId: view }
+  }
+  // 只读模式：正在查看 TA 的空间时拦截所有写请求（绑定/登录接口除外）
+  const exempt = ['/auth/', '/couple']
+  if (view && method !== 'get' && !exempt.some((p) => String(cfg.url || '').startsWith(p))) {
+    const err = new Error('正在查看 TA 的空间（只读），请先回到我的空间再记录')
+    err.code = 403
+    err.readonly = true
+    return Promise.reject(err)
+  }
   return cfg
 })
 

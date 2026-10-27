@@ -10,6 +10,7 @@ const routes = [
   { path: '/todos', name: 'todos', component: () => import('../views/Todos.vue'), meta: { title: '待办清单', nav: 'todos' } },
   { path: '/bills', name: 'bills', component: () => import('../views/Bills.vue'), meta: { title: '记账流水', nav: 'bills' } },
   { path: '/stats', name: 'stats', component: () => import('../views/Stats.vue'), meta: { title: '数据统计', nav: 'stats' } },
+  { path: '/couple', name: 'couple', component: () => import('../views/Couple.vue'), meta: { title: '情侣空间', nav: 'couple' } },
   { path: '/:pathMatch(.*)*', redirect: '/' }
 ]
 

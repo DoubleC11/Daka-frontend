@@ -1,0 +1,2769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f1f3ed">
+  <meta name="description" content="AERA ONE 手机官网展览页。5.9 毫米航空钛金属机身，48MP AERA Halo 影像系统，2K 自适应高刷屏。">
+  <title>AERA ONE | 轻到忘记，亮到记得</title>
+  <style>
+    :root {
+      --paper: #f1f3ed;
+      --paper-deep: #e7ebe4;
+      --ink: #121410;
+      --ink-soft: #353932;
+      --muted: #53584f;
+      --line: rgba(18, 20, 16, 0.16);
+      --line-dark: rgba(255, 255, 255, 0.17);
+      --signal: #f05a2a;
+      --signal-text: #ad310b;
+      --signal-dark: #c83e16;
+      --ice: #d9e9ee;
+      --ice-deep: #b8d5dc;
+      --night: #111611;
+      --white: #ffffff;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --page-pad: 42px;
+      --header-h: 76px;
+      --font-sans: "Avenir Next", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", sans-serif;
+      --font-cn: "Songti SC", "STSong", "Noto Serif SC", serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 92px;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      letter-spacing: 0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+      color: var(--ink);
+      background: #ffbf9f;
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--paper);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #a8ada3;
+      border: 3px solid var(--paper);
+      border-radius: 999px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    img,
+    canvas,
+    svg {
+      display: block;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--signal);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: fixed;
+      z-index: 1000;
+      top: 12px;
+      left: 12px;
+      padding: 10px 16px;
+      color: var(--white);
+      background: var(--ink);
+      transform: translateY(-180%);
+      transition: transform 160ms ease;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .scroll-progress {
+      position: fixed;
+      z-index: 90;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      pointer-events: none;
+      background: transparent;
+    }
+
+    .scroll-progress span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: var(--signal);
+      transform: scaleX(0);
+      transform-origin: left center;
+      will-change: transform;
+    }
+
+    .site-header {
+      position: relative;
+      z-index: 80;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--header-h);
+      padding: 0 var(--page-pad);
+      border-bottom: 1px solid var(--line);
+      background: rgba(241, 243, 237, 0.92);
+    }
+
+    .wordmark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .wordmark::after {
+      width: 6px;
+      height: 6px;
+      content: "";
+      background: var(--signal);
+      border-radius: 50%;
+      transform: translateY(-8px);
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .site-nav a {
+      position: relative;
+      padding: 10px 0;
+    }
+
+    .site-nav a::after {
+      position: absolute;
+      right: 0;
+      bottom: 4px;
+      left: 0;
+      height: 1px;
+      content: "";
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 220ms var(--ease);
+    }
+
+    .site-nav a:hover::after,
+    .site-nav a:focus-visible::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      min-height: 46px;
+      padding: 0 20px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition:
+        color 180ms ease,
+        background 180ms ease,
+        border-color 180ms ease,
+        transform 180ms var(--ease);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button:active {
+      transform: translateY(0);
+    }
+
+    .button svg {
+      width: 17px;
+      height: 17px;
+      transition: transform 180ms var(--ease);
+    }
+
+    .button:hover svg {
+      transform: translateX(3px);
+    }
+
+    .button--ink {
+      color: var(--white);
+      background: var(--ink);
+    }
+
+    .button--ink:hover {
+      background: #292d26;
+    }
+
+    .button--signal {
+      color: var(--ink);
+      background: var(--signal);
+    }
+
+    .button--signal:hover {
+      background: #ff7041;
+    }
+
+    .button--outline {
+      border-color: var(--line);
+      background: transparent;
+    }
+
+    .button--outline:hover {
+      border-color: var(--ink);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .menu-toggle svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .menu-toggle .icon-close {
+      display: none;
+    }
+
+    .nav-open .menu-toggle .icon-menu {
+      display: none;
+    }
+
+    .nav-open .menu-toggle .icon-close {
+      display: block;
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.04fr) minmax(480px, 0.96fr);
+      align-items: stretch;
+      min-height: 680px;
+      height: calc(94svh - var(--header-h));
+      max-height: 850px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 42px var(--page-pad) 34px;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: 124px;
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 0.82;
+    }
+
+    .hero-title span {
+      display: block;
+      margin: 12px 0 0 2px;
+      color: var(--signal-text);
+      font-family: var(--font-cn);
+      font-size: 0.27em;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .hero-lead {
+      max-width: 570px;
+      margin: 34px 0 0;
+      font-family: var(--font-cn);
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .hero-desc {
+      max-width: 470px;
+      margin: 18px 0 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+      line-height: 1.85;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .finish-picker {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 32px;
+    }
+
+    .finish-picker__label {
+      min-width: 58px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .finish-options {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .finish-option {
+      position: relative;
+      width: 27px;
+      height: 27px;
+      padding: 0;
+      border: 1px solid rgba(18, 20, 16, 0.25);
+      border-radius: 50%;
+      background: var(--swatch);
+      cursor: pointer;
+    }
+
+    .finish-option::after {
+      position: absolute;
+      inset: -5px;
+      content: "";
+      border: 1px solid transparent;
+      border-radius: 50%;
+      transition: border-color 160ms ease;
+    }
+
+    .finish-option[aria-pressed="true"]::after {
+      border-color: var(--ink);
+    }
+
+    .finish-option[data-finish="obsidian"] {
+      --swatch: #222722;
+    }
+
+    .finish-option[data-finish="silver"] {
+      --swatch: #cbd1cf;
+    }
+
+    .finish-option[data-finish="ember"] {
+      --swatch: #d64e23;
+    }
+
+    .hero-specs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: 570px;
+      margin-top: auto;
+      padding-top: 30px;
+      border-top: 1px solid var(--line);
+    }
+
+    .hero-spec {
+      padding-right: 18px;
+    }
+
+    .hero-spec + .hero-spec {
+      padding-left: 18px;
+      border-left: 1px solid var(--line);
+    }
+
+    .hero-spec strong {
+      display: block;
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .hero-spec span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .device-stage {
+      --frame-light: #777d77;
+      --frame-mid: #363b36;
+      --frame-dark: #0e100e;
+      --wall-a: #0d120f;
+      --wall-b: #1b3529;
+      --wall-c: #d95b31;
+      --stage-tint: #d9e9ee;
+      position: relative;
+      z-index: 2;
+      display: grid;
+      min-width: 0;
+      place-items: center;
+      overflow: hidden;
+      perspective: 1200px;
+      background: var(--stage-tint);
+      transition: background 420ms ease;
+    }
+
+    .device-stage[data-finish="silver"] {
+      --frame-light: #edf1ef;
+      --frame-mid: #aeb8b5;
+      --frame-dark: #4f5955;
+      --wall-a: #c3d9dc;
+      --wall-b: #8aaab0;
+      --wall-c: #f1e8cf;
+      --stage-tint: #edf0e9;
+    }
+
+    .device-stage[data-finish="ember"] {
+      --frame-light: #ff9c75;
+      --frame-mid: #b63e19;
+      --frame-dark: #4c1608;
+      --wall-a: #31140e;
+      --wall-b: #d4471e;
+      --wall-c: #ffd4a8;
+      --stage-tint: #f2d8c8;
+    }
+
+    .device-stage::before {
+      position: absolute;
+      z-index: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 54%;
+      content: "";
+      border-left: 1px solid rgba(18, 20, 16, 0.14);
+      background:
+        linear-gradient(rgba(18, 20, 16, 0.08) 1px, transparent 1px) 0 0 / 100% 72px,
+        var(--stage-tint);
+      transition: background 420ms ease;
+    }
+
+    .device-stage::after {
+      position: absolute;
+      z-index: 0;
+      top: 10%;
+      right: calc(54% - 4px);
+      width: 8px;
+      height: 80%;
+      content: "";
+      background: var(--signal);
+    }
+
+    .stage-label {
+      position: absolute;
+      z-index: 3;
+      top: 28px;
+      right: 28px;
+      color: rgba(18, 20, 16, 0.66);
+      font-size: 12px;
+      line-height: 1.5;
+      text-align: right;
+    }
+
+    .stage-label strong {
+      display: block;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .phone-wrap {
+      --rx: 0deg;
+      --ry: 0deg;
+      position: relative;
+      z-index: 2;
+      transform: rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(-7deg);
+      transform-style: preserve-3d;
+      transition: transform 400ms var(--ease);
+      will-change: transform;
+    }
+
+    .phone {
+      position: relative;
+      width: 306px;
+      aspect-ratio: 0.487;
+      padding: 9px;
+      border-radius: 56px;
+      background:
+        linear-gradient(112deg, var(--frame-light) 0%, var(--frame-mid) 15%, var(--frame-dark) 46%, var(--frame-mid) 83%, var(--frame-light) 100%);
+      box-shadow:
+        -26px 34px 46px rgba(24, 28, 23, 0.2),
+        -8px 12px 15px rgba(24, 28, 23, 0.12),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.34);
+      transition: background 420ms ease, box-shadow 420ms ease;
+    }
+
+    .phone::before {
+      position: absolute;
+      inset: 5px;
+      content: "";
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 51px;
+      pointer-events: none;
+    }
+
+    .phone::after {
+      position: absolute;
+      inset: 17px 12px 17px 13px;
+      content: "";
+      border-radius: 42px;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.8);
+      pointer-events: none;
+    }
+
+    .phone-button {
+      position: absolute;
+      width: 4px;
+      border-radius: 3px 0 0 3px;
+      background: var(--frame-mid);
+      box-shadow: inset 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .phone-button--silent {
+      top: 112px;
+      left: -4px;
+      height: 28px;
+    }
+
+    .phone-button--up {
+      top: 154px;
+      left: -4px;
+      height: 50px;
+    }
+
+    .phone-button--down {
+      top: 214px;
+      left: -4px;
+      height: 50px;
+    }
+
+    .phone-button--power {
+      top: 172px;
+      right: -4px;
+      width: 3px;
+      height: 82px;
+      border-radius: 0 3px 3px 0;
+    }
+
+    .phone-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 47px;
+      color: var(--white);
+      background: var(--wall-a);
+      isolation: isolate;
+    }
+
+    .phone-screen::after {
+      position: absolute;
+      z-index: 5;
+      inset: 0;
+      content: "";
+      border-radius: inherit;
+      pointer-events: none;
+      background:
+        linear-gradient(116deg, rgba(255, 255, 255, 0.12), transparent 18%, transparent 78%, rgba(255, 255, 255, 0.04)),
+        radial-gradient(circle at 90% 6%, rgba(255, 255, 255, 0.12), transparent 25%);
+    }
+
+    .screen-canvas {
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .dynamic-island {
+      position: absolute;
+      z-index: 7;
+      top: 12px;
+      left: 50%;
+      width: 92px;
+      height: 26px;
+      border-radius: 999px;
+      background: #050605;
+      transform: translateX(-50%);
+      box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.08);
+    }
+
+    .dynamic-island::after {
+      position: absolute;
+      top: 9px;
+      right: 10px;
+      width: 7px;
+      height: 7px;
+      content: "";
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #314f69, #071017 70%);
+    }
+
+    .lock-screen {
+      position: absolute;
+      z-index: 3;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 55px 22px 18px;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .signal-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.5px;
+      height: 8px;
+    }
+
+    .signal-bars i {
+      display: block;
+      width: 2px;
+      border-radius: 1px;
+      background: currentColor;
+    }
+
+    .signal-bars i:nth-child(1) { height: 3px; }
+    .signal-bars i:nth-child(2) { height: 5px; }
+    .signal-bars i:nth-child(3) { height: 7px; }
+    .signal-bars i:nth-child(4) { height: 8px; }
+
+    .battery {
+      position: relative;
+      width: 16px;
+      height: 8px;
+      border: 1px solid currentColor;
+      border-radius: 2px;
+    }
+
+    .battery::before {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      bottom: 1px;
+      left: 1px;
+      content: "";
+      background: currentColor;
+      border-radius: 1px;
+      transform: scaleX(0.76);
+      transform-origin: left;
+    }
+
+    .battery::after {
+      position: absolute;
+      top: 2px;
+      right: -3px;
+      width: 1.5px;
+      height: 3px;
+      content: "";
+      background: currentColor;
+      border-radius: 0 1px 1px 0;
+    }
+
+    .lock-clock {
+      margin: 35px 0 0;
+      font-size: 70px;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 1;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    .lock-date {
+      margin: 8px 0 0;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .lock-weather {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      background: rgba(8, 11, 9, 0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    .lock-weather strong {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .lock-weather span {
+      font-size: 12px;
+      opacity: 0.76;
+    }
+
+    .lock-dock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 8px 0;
+    }
+
+    .dock-button {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 50%;
+      background: rgba(15, 18, 15, 0.22);
+      backdrop-filter: blur(10px);
+    }
+
+    .dock-button svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .home-bar {
+      width: 88px;
+      height: 3px;
+      margin: 12px auto 0;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .stage-measure {
+      position: absolute;
+      z-index: 3;
+      right: 24px;
+      bottom: 26px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      color: rgba(18, 20, 16, 0.62);
+      font-size: 12px;
+    }
+
+    .stage-measure::before {
+      width: 52px;
+      height: 1px;
+      content: "";
+      background: currentColor;
+    }
+
+    .stage-measure strong {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .ticker {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      min-height: 54px;
+      padding: 15px var(--page-pad);
+      overflow: hidden;
+      color: var(--paper);
+      background: var(--ink);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .ticker span {
+      display: inline-flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .ticker i {
+      width: 5px;
+      height: 5px;
+      background: var(--signal);
+      border-radius: 50%;
+    }
+
+    .section {
+      position: relative;
+      padding: 124px var(--page-pad);
+    }
+
+    .section-inner {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .design {
+      overflow: hidden;
+      background: var(--paper);
+    }
+
+    .design-grid {
+      display: grid;
+      grid-template-columns: minmax(320px, 0.76fr) minmax(0, 1.24fr);
+      gap: 80px;
+      align-items: center;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-family: var(--font-cn);
+      font-size: 74px;
+      font-weight: 600;
+      letter-spacing: 0;
+      line-height: 1.12;
+    }
+
+    .section-heading p {
+      max-width: 460px;
+      margin: 28px 0 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .material-ledger {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
+      max-width: 460px;
+      margin-top: 42px;
+      border-top: 1px solid var(--line);
+    }
+
+    .material-ledger div {
+      padding: 18px 18px 0 0;
+    }
+
+    .material-ledger div:nth-child(even) {
+      padding-left: 18px;
+      border-left: 1px solid var(--line);
+    }
+
+    .material-ledger strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .material-ledger span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .thin-study {
+      position: relative;
+      min-height: 540px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, transparent calc(50% - 0.5px), rgba(18, 20, 16, 0.1) 50%, transparent calc(50% + 0.5px)),
+        linear-gradient(transparent calc(50% - 0.5px), rgba(18, 20, 16, 0.1) 50%, transparent calc(50% + 0.5px)),
+        #e9ebe4;
+    }
+
+    .thin-study__title {
+      position: absolute;
+      top: 25px;
+      left: 28px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .thin-study__index {
+      position: absolute;
+      right: 28px;
+      bottom: 22px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .edge-phone {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 72%;
+      max-width: 660px;
+      height: 27px;
+      border-radius: 21px;
+      background:
+        linear-gradient(180deg, #dfe5e2 0%, #939b97 23%, #434943 54%, #1c211c 68%, #8d9590 100%);
+      box-shadow:
+        0 22px 28px rgba(20, 24, 20, 0.2),
+        0 5px 7px rgba(20, 24, 20, 0.2);
+      transform: translate(-50%, -50%) rotate(-11deg);
+    }
+
+    .edge-phone::before {
+      position: absolute;
+      top: 5px;
+      right: 8%;
+      width: 31%;
+      height: 9px;
+      content: "";
+      border-radius: 99px;
+      background: #11140f;
+      box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.16);
+    }
+
+    .edge-phone::after {
+      position: absolute;
+      top: 3px;
+      left: 7%;
+      width: 11%;
+      height: 4px;
+      content: "";
+      border-radius: 99px;
+      background: linear-gradient(90deg, #2c312b, #b8c0bb, #2c312b);
+    }
+
+    .edge-button {
+      position: absolute;
+      width: 46px;
+      height: 5px;
+      border-radius: 4px;
+      background: #1b201a;
+    }
+
+    .edge-button--one {
+      top: -4px;
+      left: 22%;
+    }
+
+    .edge-button--two {
+      top: -4px;
+      left: 32%;
+    }
+
+    .edge-button--three {
+      bottom: -4px;
+      right: 16%;
+    }
+
+    .measure-line {
+      position: absolute;
+      top: calc(50% - 53px);
+      left: 15%;
+      width: 70%;
+      height: 1px;
+      background: var(--signal);
+      transform: rotate(-11deg);
+    }
+
+    .measure-line::before,
+    .measure-line::after {
+      position: absolute;
+      top: -5px;
+      width: 1px;
+      height: 11px;
+      content: "";
+      background: var(--signal);
+    }
+
+    .measure-line::before { left: 0; }
+    .measure-line::after { right: 0; }
+
+    .measure-label {
+      position: absolute;
+      top: calc(50% - 105px);
+      left: 51%;
+      padding: 4px 9px;
+      color: var(--ink);
+      background: var(--signal);
+      font-size: 12px;
+      font-weight: 700;
+      transform: rotate(-11deg);
+    }
+
+    .thin-study__ghost {
+      position: absolute;
+      bottom: -42px;
+      left: 50%;
+      color: rgba(18, 20, 16, 0.055);
+      font-size: 168px;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      transform: translateX(-50%);
+    }
+
+    .camera {
+      overflow: hidden;
+      color: #f4f6f1;
+      background: var(--night);
+    }
+
+    .camera-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.2fr);
+      gap: 72px;
+      align-items: center;
+    }
+
+    .camera .section-heading h2 {
+      font-size: 82px;
+    }
+
+    .camera .section-heading p {
+      color: rgba(244, 246, 241, 0.68);
+    }
+
+    .camera-specs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: 520px;
+      margin-top: 48px;
+      border-top: 1px solid var(--line-dark);
+    }
+
+    .camera-specs div {
+      padding: 18px 14px 0 0;
+    }
+
+    .camera-specs div + div {
+      padding-left: 14px;
+      border-left: 1px solid var(--line-dark);
+    }
+
+    .camera-specs strong {
+      display: block;
+      font-size: 19px;
+      font-weight: 500;
+    }
+
+    .camera-specs span {
+      display: block;
+      margin-top: 4px;
+      color: rgba(244, 246, 241, 0.58);
+      font-size: 12px;
+    }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 42px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid currentColor;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .text-link svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 180ms var(--ease);
+    }
+
+    .text-link:hover svg {
+      transform: translateX(4px);
+    }
+
+    .lens-scene {
+      position: relative;
+      display: grid;
+      min-height: 600px;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .lens-scene::before {
+      position: absolute;
+      z-index: -1;
+      top: 50%;
+      left: 50%;
+      width: 94%;
+      aspect-ratio: 1;
+      content: "";
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .lens-scene::after {
+      position: absolute;
+      z-index: -1;
+      top: 10%;
+      left: 55%;
+      width: 1px;
+      height: 80%;
+      content: "";
+      background: rgba(255, 255, 255, 0.12);
+      transform: rotate(35deg);
+    }
+
+    .lens-housing {
+      position: relative;
+      width: min(48vw, 550px);
+      min-width: 390px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 49% 46%, #09100d 0 23%, transparent 23.5%),
+        radial-gradient(circle at 50% 50%, #252d27 0 28%, #0e120f 28.5% 50%, #414a42 50.5% 51.2%, #111511 51.7% 100%);
+      box-shadow:
+        0 70px 100px rgba(0, 0, 0, 0.52),
+        inset 0 2px 5px rgba(255, 255, 255, 0.15),
+        inset 0 -8px 15px rgba(0, 0, 0, 0.8);
+      transform: rotate(-9deg);
+    }
+
+    .lens-glass {
+      position: absolute;
+      inset: 22%;
+      overflow: hidden;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 40% 32%, rgba(255, 139, 83, 0.62) 0 5%, transparent 6%),
+        radial-gradient(circle at 65% 72%, rgba(57, 161, 189, 0.34), transparent 26%),
+        radial-gradient(circle at 50% 50%, #1a382f 0 12%, #091613 13% 32%, #0d0503 46%, #050706 73%);
+      box-shadow:
+        inset 0 0 0 9px #070a08,
+        inset 0 0 35px rgba(0, 0, 0, 0.9),
+        0 0 0 2px rgba(255, 255, 255, 0.1);
+    }
+
+    .lens-glass::before {
+      position: absolute;
+      top: 12%;
+      left: 17%;
+      width: 44%;
+      height: 17%;
+      content: "";
+      border-radius: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), transparent);
+      filter: blur(4px);
+      transform: rotate(-26deg);
+    }
+
+    .lens-glass::after {
+      position: absolute;
+      top: 35%;
+      left: 39%;
+      width: 24%;
+      aspect-ratio: 1;
+      content: "";
+      border: 1px solid rgba(77, 224, 202, 0.34);
+      border-radius: 50%;
+      box-shadow:
+        8px 12px 24px rgba(0, 0, 0, 0.42),
+        inset 0 0 22px rgba(0, 0, 0, 0.55);
+    }
+
+    .lens-core {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #b4e2da, #10382e 30%, #020504 66%);
+      box-shadow: 8px 14px 32px rgba(0, 0, 0, 0.52);
+      transform: translate(-50%, -50%);
+    }
+
+    .lens-rim-text {
+      position: absolute;
+      right: 25%;
+      bottom: 22%;
+      color: rgba(255, 255, 255, 0.38);
+      font-size: 12px;
+    }
+
+    .camera-tag {
+      position: absolute;
+      right: 0;
+      bottom: 30px;
+      width: 190px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line-dark);
+      color: rgba(244, 246, 241, 0.6);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .camera-tag strong {
+      display: block;
+      color: #f4f6f1;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .display {
+      overflow: hidden;
+      background: var(--ice);
+    }
+
+    .display-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(330px, 0.88fr);
+      gap: 90px;
+      align-items: center;
+    }
+
+    .display-visual {
+      position: relative;
+      min-height: 760px;
+    }
+
+    .display-frame {
+      position: absolute;
+      top: 50%;
+      left: 48%;
+      width: 450px;
+      aspect-ratio: 0.487;
+      padding: 10px;
+      border-radius: 66px;
+      background: linear-gradient(110deg, #d7dfdc, #59625e 13%, #1a1e1a 49%, #707b76 87%, #dbe3df);
+      box-shadow:
+        -34px 48px 64px rgba(18, 20, 16, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+      transform: translate(-50%, -47%) rotate(8deg);
+    }
+
+    .display-frame::before {
+      position: absolute;
+      top: 25%;
+      right: -4px;
+      width: 3px;
+      height: 90px;
+      content: "";
+      border-radius: 3px 0 0 3px;
+      background: #333b37;
+    }
+
+    .display-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 57px;
+      background: #0c1818;
+      isolation: isolate;
+    }
+
+    .display-screen::after {
+      position: absolute;
+      z-index: 5;
+      inset: 0;
+      content: "";
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.12), transparent 23%, transparent 73%, rgba(255, 255, 255, 0.04));
+    }
+
+    .display-screen .dynamic-island {
+      top: 14px;
+      width: 108px;
+      height: 29px;
+    }
+
+    .display-poster {
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 70px 30px 27px;
+      color: var(--white);
+    }
+
+    .display-poster__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+
+    .display-poster__top strong {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .display-poster__copy h3 {
+      margin: 0;
+      font-family: var(--font-cn);
+      font-size: 39px;
+      font-weight: 600;
+      line-height: 1.16;
+    }
+
+    .display-poster__copy p {
+      margin: 12px 0 0;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 12px;
+    }
+
+    .display-poster__bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.28);
+      font-size: 12px;
+    }
+
+    .display-index {
+      position: absolute;
+      right: -60px;
+      bottom: 40px;
+      color: #647b80;
+      font-size: 200px;
+      font-weight: 700;
+      line-height: 0.8;
+    }
+
+    .display-features {
+      max-width: 440px;
+    }
+
+    .display-features h2 {
+      margin: 0;
+      font-family: var(--font-cn);
+      font-size: 74px;
+      font-weight: 600;
+      line-height: 1.12;
+    }
+
+    .display-features > p {
+      max-width: 390px;
+      margin: 28px 0 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .display-stats {
+      margin-top: 48px;
+      border-top: 1px solid var(--line);
+    }
+
+    .display-stat {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 18px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+
+    .display-stat strong {
+      font-size: 26px;
+      font-weight: 500;
+    }
+
+    .display-stat span {
+      color: var(--ink-soft);
+      font-size: 12px;
+    }
+
+    .specs {
+      color: #f2f4ed;
+      background: var(--ink);
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.62fr) minmax(0, 1.38fr);
+      gap: 86px;
+    }
+
+    .specs-intro h2 {
+      margin: 0;
+      font-family: var(--font-cn);
+      font-size: 66px;
+      font-weight: 600;
+      line-height: 1.13;
+    }
+
+    .specs-intro p {
+      max-width: 330px;
+      margin: 28px 0 0;
+      color: rgba(242, 244, 237, 0.6);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .spec-list {
+      margin: 0;
+      border-top: 1px solid var(--line-dark);
+    }
+
+    .spec-row {
+      display: grid;
+      grid-template-columns: minmax(130px, 0.42fr) minmax(0, 0.58fr);
+      gap: 30px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line-dark);
+    }
+
+    .spec-row dt {
+      color: rgba(242, 244, 237, 0.64);
+      font-size: 12px;
+    }
+
+    .spec-row dd {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .reserve {
+      position: relative;
+      overflow: hidden;
+      color: var(--ink);
+      background: var(--signal);
+    }
+
+    .reserve::after {
+      position: absolute;
+      right: -130px;
+      bottom: -230px;
+      width: 640px;
+      height: 640px;
+      content: "";
+      border: 1px solid rgba(18, 20, 16, 0.18);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .reserve-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+      gap: 90px;
+      align-items: end;
+    }
+
+    .reserve h2 {
+      max-width: 800px;
+      margin: 0;
+      font-family: var(--font-cn);
+      font-size: 82px;
+      font-weight: 600;
+      line-height: 1.08;
+    }
+
+    .reserve-copy p {
+      max-width: 520px;
+      margin: 26px 0 0;
+      color: #10120f;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .reserve-form {
+      position: relative;
+      padding-top: 18px;
+      border-top: 1px solid rgba(18, 20, 16, 0.28);
+    }
+
+    .reserve-form label {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .reserve-form input {
+      width: 100%;
+      min-width: 0;
+      height: 52px;
+      padding: 0 17px;
+      color: var(--ink);
+      border: 1px solid rgba(18, 20, 16, 0.42);
+      border-radius: 0;
+      background: rgba(255, 255, 255, 0.24);
+      outline: none;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .reserve-form input::placeholder {
+      color: rgba(18, 20, 16, 0.76);
+    }
+
+    .reserve-form input:focus {
+      border-color: var(--ink);
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .reserve-form .button {
+      flex: 0 0 auto;
+      border-radius: 0;
+    }
+
+    .form-status {
+      min-height: 22px;
+      margin: 12px 0 0;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .site-footer {
+      padding: 66px var(--page-pad) 34px;
+      color: rgba(242, 244, 237, 0.72);
+      background: #0b0d0a;
+    }
+
+    .footer-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-bottom: 74px;
+    }
+
+    .footer-wordmark {
+      color: #f2f4ed;
+      font-size: 86px;
+      font-weight: 700;
+      line-height: 0.8;
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(110px, auto));
+      gap: 56px;
+      font-size: 12px;
+    }
+
+    .footer-links strong {
+      display: block;
+      margin-bottom: 15px;
+      color: #f2f4ed;
+      font-weight: 600;
+    }
+
+    .footer-links a {
+      display: block;
+      width: max-content;
+      margin-top: 9px;
+    }
+
+    .footer-links a:hover {
+      color: #f2f4ed;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 22px;
+      border-top: 1px solid rgba(242, 244, 237, 0.14);
+      font-size: 10px;
+    }
+
+    .hero-copy,
+    .phone-wrap,
+    .site-header {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    .phone-wrap {
+      transform: translateY(45px) rotateX(0deg) rotateY(0deg) rotateZ(-4deg);
+    }
+
+    .is-loaded .hero-copy,
+    .is-loaded .site-header {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 700ms var(--ease), transform 820ms var(--ease);
+    }
+
+    .is-loaded .phone-wrap {
+      opacity: 1;
+      transform: translateY(0) rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(-7deg);
+      transition:
+        opacity 900ms 160ms var(--ease),
+        transform 1100ms 100ms var(--ease);
+    }
+
+    .is-loaded .phone-wrap.is-tilting {
+      transition: transform 220ms var(--ease);
+    }
+
+    @media (max-width: 1180px) {
+      :root {
+        --page-pad: 30px;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 0.94fr) minmax(430px, 1.06fr);
+      }
+
+      .hero-title {
+        font-size: 104px;
+      }
+
+      .hero-lead {
+        font-size: 34px;
+      }
+
+      .phone {
+        width: 276px;
+      }
+
+      .section {
+        padding-top: 104px;
+        padding-bottom: 104px;
+      }
+
+      .section-heading h2,
+      .display-features h2 {
+        font-size: 64px;
+      }
+
+      .camera .section-heading h2 {
+        font-size: 68px;
+      }
+
+      .design-grid,
+      .camera-grid,
+      .display-grid,
+      .specs-grid,
+      .reserve-grid {
+        gap: 54px;
+      }
+
+      .display-frame {
+        width: 390px;
+      }
+
+      .display-visual {
+        min-height: 690px;
+      }
+
+      .reserve h2 {
+        font-size: 68px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      :root {
+        --header-h: 66px;
+        --page-pad: 22px;
+      }
+
+      html {
+        scroll-padding-top: 76px;
+      }
+
+      .site-nav {
+        position: absolute;
+        top: var(--header-h);
+        right: 0;
+        left: 0;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 8px var(--page-pad) 22px;
+        border-bottom: 1px solid var(--line);
+        background: var(--paper);
+      }
+
+      .nav-open .site-nav {
+        display: flex;
+      }
+
+      .site-nav a {
+        padding: 15px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 15px;
+      }
+
+      .site-nav a::after {
+        display: none;
+      }
+
+      .nav-reserve {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: grid;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        height: auto;
+        max-height: none;
+        min-height: calc(94svh - var(--header-h));
+      }
+
+      .hero-copy {
+        padding-top: 54px;
+        padding-bottom: 28px;
+      }
+
+      .hero-title {
+        font-size: 92px;
+      }
+
+      .hero-lead {
+        margin-top: 28px;
+        font-size: 33px;
+      }
+
+      .hero-specs {
+        margin-top: 52px;
+      }
+
+      .device-stage {
+        min-height: 640px;
+        border-top: 1px solid var(--line);
+      }
+
+      .device-stage::before {
+        width: 62%;
+      }
+
+      .device-stage::after {
+        right: calc(62% - 4px);
+      }
+
+      .phone {
+        width: 290px;
+      }
+
+      .design-grid,
+      .camera-grid,
+      .display-grid,
+      .specs-grid,
+      .reserve-grid {
+        grid-template-columns: 1fr;
+        gap: 58px;
+      }
+
+      .thin-study {
+        min-height: 450px;
+      }
+
+      .camera-grid {
+        gap: 20px;
+      }
+
+      .lens-scene {
+        min-height: 540px;
+      }
+
+      .lens-housing {
+        width: min(80vw, 500px);
+      }
+
+      .camera-tag {
+        right: 20px;
+      }
+
+      .display-features {
+        order: -1;
+      }
+
+      .display-visual {
+        min-height: 720px;
+      }
+
+      .display-frame {
+        width: 430px;
+        left: 46%;
+      }
+
+      .specs-intro h2 {
+        font-size: 58px;
+      }
+
+      .reserve-grid {
+        align-items: start;
+      }
+
+      .footer-wordmark {
+        font-size: 62px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      :root {
+        --page-pad: 18px;
+      }
+
+      .site-header {
+        padding-right: 16px;
+        padding-left: 18px;
+      }
+
+      .wordmark {
+        font-size: 19px;
+      }
+
+      .hero-copy {
+        padding-top: 44px;
+      }
+
+      .hero-title {
+        font-size: 68px;
+        line-height: 0.86;
+      }
+
+      .hero-title span {
+        margin-top: 9px;
+        font-size: 0.3em;
+      }
+
+      .hero-lead {
+        font-size: 29px;
+      }
+
+      .hero-desc {
+        font-size: 14px;
+      }
+
+      .hero-actions {
+        align-items: stretch;
+      }
+
+      .hero-actions .button {
+        flex: 1 1 150px;
+      }
+
+      .finish-picker {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 11px;
+      }
+
+      .hero-specs {
+        margin-top: 38px;
+      }
+
+      .hero-spec {
+        padding-right: 9px;
+      }
+
+      .hero-spec + .hero-spec {
+        padding-left: 9px;
+      }
+
+      .hero-spec strong {
+        font-size: 18px;
+      }
+
+      .hero-spec span {
+        font-size: 12px;
+      }
+
+      .device-stage {
+        min-height: 540px;
+      }
+
+      .stage-label {
+        top: 19px;
+        right: 18px;
+      }
+
+      .phone {
+        width: 238px;
+        border-radius: 47px;
+        padding: 8px;
+      }
+
+      .phone::before {
+        border-radius: 43px;
+      }
+
+      .phone::after {
+        border-radius: 35px;
+      }
+
+      .phone-screen {
+        border-radius: 39px;
+      }
+
+      .dynamic-island {
+        width: 76px;
+        height: 22px;
+      }
+
+      .lock-screen {
+        padding: 47px 18px 14px;
+      }
+
+      .lock-clock {
+        margin-top: 30px;
+        font-size: 54px;
+      }
+
+      .lock-weather {
+        padding: 10px 11px;
+      }
+
+      .dock-button {
+        width: 31px;
+        height: 31px;
+      }
+
+      .stage-measure {
+        right: 18px;
+        bottom: 18px;
+      }
+
+      .ticker {
+        min-height: 46px;
+        padding: 12px 18px;
+      }
+
+      .section {
+        padding-top: 78px;
+        padding-bottom: 78px;
+      }
+
+      .section-heading h2,
+      .display-features h2 {
+        font-size: 48px;
+      }
+
+      .camera .section-heading h2 {
+        font-size: 54px;
+      }
+
+      .section-heading p,
+      .display-features > p {
+        margin-top: 22px;
+      }
+
+      .material-ledger {
+        margin-top: 32px;
+      }
+
+      .thin-study {
+        min-height: 340px;
+      }
+
+      .edge-phone {
+        width: 82%;
+        height: 20px;
+      }
+
+      .measure-label {
+        top: calc(50% - 82px);
+      }
+
+      .thin-study__ghost {
+        font-size: 104px;
+      }
+
+      .lens-scene {
+        min-height: 390px;
+      }
+
+      .lens-housing {
+        width: 88vw;
+        min-width: 0;
+      }
+
+      .camera-tag {
+        right: 0;
+        bottom: -8px;
+        width: 160px;
+      }
+
+      .camera-specs {
+        margin-top: 36px;
+      }
+
+      .camera-specs strong {
+        font-size: 16px;
+      }
+
+      .display-visual {
+        min-height: 570px;
+      }
+
+      .display-frame {
+        width: 310px;
+        padding: 8px;
+        border-radius: 50px;
+      }
+
+      .display-screen {
+        border-radius: 42px;
+      }
+
+      .display-screen .dynamic-island {
+        width: 84px;
+        height: 24px;
+      }
+
+      .display-poster {
+        padding: 56px 22px 20px;
+      }
+
+      .display-poster__copy h3 {
+        font-size: 30px;
+      }
+
+      .display-index {
+        right: -34px;
+        font-size: 140px;
+      }
+
+      .display-stats {
+        margin-top: 36px;
+      }
+
+      .display-stat {
+        grid-template-columns: 78px 1fr;
+      }
+
+      .specs-intro h2 {
+        font-size: 50px;
+      }
+
+      .spec-row {
+        grid-template-columns: 100px 1fr;
+        gap: 16px;
+      }
+
+      .reserve h2 {
+        font-size: 52px;
+      }
+
+      .form-row {
+        flex-direction: column;
+      }
+
+      .reserve-form .button {
+        width: 100%;
+      }
+
+      .footer-top {
+        flex-direction: column;
+        padding-bottom: 52px;
+      }
+
+      .footer-wordmark {
+        font-size: 54px;
+      }
+
+      .footer-links {
+        width: 100%;
+        gap: 20px;
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .hero-title {
+        font-size: 58px;
+      }
+
+      .hero-lead {
+        font-size: 26px;
+      }
+
+      .device-stage {
+        min-height: 500px;
+      }
+
+      .phone {
+        width: 218px;
+      }
+
+      .display-frame {
+        width: 282px;
+      }
+
+      .camera .section-heading h2,
+      .reserve h2 {
+        font-size: 46px;
+      }
+
+      .footer-links {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+
+      .hero-copy,
+      .phone-wrap,
+      .site-header {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
+
+  <header class="site-header" id="siteHeader">
+    <a class="wordmark" href="#top" aria-label="AERA 首页">AERA</a>
+    <nav class="site-nav" id="siteNav" aria-label="主要导航">
+      <a href="#design">设计</a>
+      <a href="#camera">影像</a>
+      <a href="#display">屏幕</a>
+      <a href="#specs">参数</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="button button--ink nav-reserve" href="#reserve">
+        预约体验
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="打开菜单">
+        <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 8h16M4 16h16"/>
+        </svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <h1 class="hero-title" id="heroTitle">AERA<br>ONE<span>轻盈，但从不轻率。</span></h1>
+        <p class="hero-lead">轻到忘记，<br>亮到记得。</p>
+        <p class="hero-desc">5.9 毫米航空钛金属机身，把旗舰性能收进更克制的轮廓。掌心第一次不必适应一部手机，而是由手机适应你。</p>
+        <div class="hero-actions">
+          <a class="button button--signal" href="#reserve">
+            预约体验
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+          </a>
+          <a class="button button--outline" href="#camera">了解 AERA Halo</a>
+        </div>
+        <div class="finish-picker">
+          <span class="finish-picker__label" id="finishName">曜石黑</span>
+          <div class="finish-options" role="group" aria-label="选择机身配色">
+            <button class="finish-option" type="button" data-finish="obsidian" data-name="曜石黑" aria-label="曜石黑" aria-pressed="true"></button>
+            <button class="finish-option" type="button" data-finish="silver" data-name="月岩银" aria-label="月岩银" aria-pressed="false"></button>
+            <button class="finish-option" type="button" data-finish="ember" data-name="熔光橙" aria-label="熔光橙" aria-pressed="false"></button>
+          </div>
+        </div>
+        <div class="hero-specs" aria-label="核心规格">
+          <div class="hero-spec">
+            <strong>5.9 mm</strong>
+            <span>航空钛金属机身</span>
+          </div>
+          <div class="hero-spec">
+            <strong>6.7 英寸</strong>
+            <span>2K 自适应高刷屏</span>
+          </div>
+          <div class="hero-spec">
+            <strong>48 MP</strong>
+            <span>AERA Halo 影像系统</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="device-stage" id="deviceStage" data-finish="obsidian">
+        <div class="stage-label">
+          <strong>AERA ONE</strong>
+          钛金属系列 / 2026
+        </div>
+        <div class="phone-wrap" id="phoneWrap">
+          <div class="phone" aria-label="AERA ONE 手机正面展示">
+            <span class="phone-button phone-button--silent"></span>
+            <span class="phone-button phone-button--up"></span>
+            <span class="phone-button phone-button--down"></span>
+            <span class="phone-button phone-button--power"></span>
+            <div class="phone-screen">
+              <canvas class="screen-canvas" id="heroCanvas" aria-hidden="true"></canvas>
+              <div class="dynamic-island"></div>
+              <div class="lock-screen">
+                <div class="status-row">
+                  <span>08:24</span>
+                  <span class="status-icons" aria-hidden="true">
+                    <span class="signal-bars"><i></i><i></i><i></i><i></i></span>
+                    <span class="battery"></span>
+                  </span>
+                </div>
+                <p class="lock-clock">08:24</p>
+                <p class="lock-date">10月27日，星期一</p>
+                <div class="lock-weather">
+                  <div>
+                    <strong>上海</strong>
+                    <span>空气清透</span>
+                  </div>
+                  <strong>21°</strong>
+                </div>
+                <div class="lock-dock" aria-hidden="true">
+                  <span class="dock-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+                      <path d="M6.5 8.5h11a2 2 0 0 1 2 2V18H4.5v-7.5a2 2 0 0 1 2-2Z"/>
+                      <path d="M8.5 8.5l1.3-3h4.4l1.3 3"/>
+                    </svg>
+                  </span>
+                  <span class="dock-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+                      <path d="M12 17v4M8 21h8"/>
+                      <path d="M7.2 5.4a2.7 2.7 0 0 1 4.8-1.8 2.7 2.7 0 0 1 4.8 1.8c0 4.6-4.8 9.1-4.8 9.1S7.2 10 7.2 5.4Z"/>
+                    </svg>
+                  </span>
+                  <span class="dock-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+                      <path d="M4 6.5h16v10H8l-4 3v-13Z"/>
+                    </svg>
+                  </span>
+                </div>
+                <div class="home-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-measure">
+          机身厚度
+          <strong>5.9 mm</strong>
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <span>航空钛金属 <i></i> 5.9 mm <i></i> 178 g <i></i> 2K 自适应高刷 <i></i> 48MP AERA Halo <i></i> IP68 <i></i></span>
+      <span>航空钛金属 <i></i> 5.9 mm <i></i> 178 g <i></i> 2K 自适应高刷 <i></i> 48MP AERA Halo <i></i> IP68 <i></i></span>
+    </div>
+
+    <section class="section design" id="design" aria-labelledby="designTitle">
+      <div class="section-inner design-grid">
+        <div class="section-heading">
+          <h2 id="designTitle">把复杂，<br>收进 5.9 毫米。</h2>
+          <p>机身由一块 Grade 5 航空钛金属缓慢切削而成。更薄的边框、更轻的质量，没有牺牲结构，也没有牺牲手感。每一次握持，都更接近一支笔，而不是一台机器。</p>
+          <div class="material-ledger">
+            <div>
+              <strong>178 g</strong>
+              <span>整机重量，长时间使用依然轻松</span>
+            </div>
+            <div>
+              <strong>Ti Grade 5</strong>
+              <span>高强度航空钛金属中框</span>
+            </div>
+            <div>
+              <strong>IP68</strong>
+              <span>日常防尘防水，从容应对天气</span>
+            </div>
+            <div>
+              <strong>Ceramic Shield</strong>
+              <span>屏幕与背板双重抗刮保护</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="thin-study" aria-label="AERA ONE 侧面厚度展示">
+          <div class="thin-study__title">侧视结构研究 / 钛金属一体中框</div>
+          <div class="thin-study__ghost" aria-hidden="true">THIN</div>
+          <div class="measure-line"></div>
+          <div class="measure-label">5.9 mm</div>
+          <div class="edge-phone">
+            <span class="edge-button edge-button--one"></span>
+            <span class="edge-button edge-button--two"></span>
+            <span class="edge-button edge-button--three"></span>
+          </div>
+          <div class="thin-study__index">AERA ONE / SIDE PROFILE</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section camera" id="camera" aria-labelledby="cameraTitle">
+      <div class="section-inner camera-grid">
+        <div class="section-heading">
+          <h2 id="cameraTitle">夜，<br>原来有颜色。</h2>
+          <p>全新的 AERA Halo 影像系统，让传感器在微弱光线里仍保留颜色、层次和空气感。按下快门，不是把夜晚拍亮，而是把夜晚拍对。</p>
+          <div class="camera-specs">
+            <div>
+              <strong>48 MP</strong>
+              <span>主摄像头</span>
+            </div>
+            <div>
+              <strong>f/1.6</strong>
+              <span>大光圈</span>
+            </div>
+            <div>
+              <strong>OIS</strong>
+              <span>传感器位移防抖</span>
+            </div>
+          </div>
+          <a class="text-link" href="#specs">
+            查看完整影像参数
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="lens-scene" aria-label="AERA Halo 摄像头结构展示">
+          <div class="lens-housing">
+            <div class="lens-glass">
+              <span class="lens-core"></span>
+            </div>
+            <span class="lens-rim-text">AERA OPTICS / 48 MP</span>
+          </div>
+          <div class="camera-tag">
+            <strong>Halo low-light engine</strong>
+            多帧合成在按下快门前已经开始。你会得到的，是一张更接近记忆的照片。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section display" id="display" aria-labelledby="displayTitle">
+      <div class="section-inner display-grid">
+        <div class="display-visual" aria-label="AERA ONE 屏幕显示效果">
+          <div class="display-frame">
+            <div class="display-screen">
+              <canvas class="screen-canvas" id="displayCanvas" aria-hidden="true"></canvas>
+              <div class="dynamic-island"></div>
+              <div class="display-poster">
+                <div class="display-poster__top">
+                  <strong>Tide / 06</strong>
+                  <span>2K · 120 Hz</span>
+                </div>
+                <div class="display-poster__copy">
+                  <h3>看见光<br>移动的方式。</h3>
+                  <p>动态影像样张 / AERA Display Lab</p>
+                </div>
+                <div class="display-poster__bar">
+                  <span>3000 nit peak</span>
+                  <span>ProMotion 1-120 Hz</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="display-index" aria-hidden="true">06</div>
+        </div>
+
+        <div class="display-features">
+          <h2 id="displayTitle">每一帧，<br>都更接近眼睛。</h2>
+          <p>6.7 英寸 2K 全视屏，在强光下保持清晰，在暗光里减少刺激。自适应刷新率让滑动更顺，也让每一次停留更安静。</p>
+          <div class="display-stats">
+            <div class="display-stat">
+              <strong>3000</strong>
+              <span>nit 峰值亮度，正午户外依然清晰</span>
+            </div>
+            <div class="display-stat">
+              <strong>1-120</strong>
+              <span>Hz 自适应刷新率，流畅与省电同时成立</span>
+            </div>
+            <div class="display-stat">
+              <strong>2K</strong>
+              <span>分辨率，细腻呈现文字与影像</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section specs" id="specs" aria-labelledby="specsTitle">
+      <div class="section-inner specs-grid">
+        <div class="specs-intro">
+          <h2 id="specsTitle">每一处，<br>都经得起近看。</h2>
+          <p>从芯片到边框，从镜头到振动反馈。AERA ONE 的完整技术规格。</p>
+        </div>
+        <dl class="spec-list">
+          <div class="spec-row">
+            <dt>显示屏</dt>
+            <dd>6.7 英寸 2K 全视屏，1-120 Hz 自适应刷新率，峰值亮度 3000 nit</dd>
+          </div>
+          <div class="spec-row">
+            <dt>芯片</dt>
+            <dd>AERA A1 仿生芯片，6 核中央处理器，5 核图形处理器，16 核神经网络引擎</dd>
+          </div>
+          <div class="spec-row">
+            <dt>影像</dt>
+            <dd>48MP 主摄，f/1.6，OIS；12MP 超广角；12MP 3 倍长焦</dd>
+          </div>
+          <div class="spec-row">
+            <dt>机身</dt>
+            <dd>Grade 5 钛金属中框，Ceramic Shield 前面板，5.9 毫米，178 克</dd>
+          </div>
+          <div class="spec-row">
+            <dt>电池与充电</dt>
+            <dd>全天候续航，支持 65W 有线快充与 30W 无线快充</dd>
+          </div>
+          <div class="spec-row">
+            <dt>连接与防护</dt>
+            <dd>5G，Wi-Fi 7，蓝牙 5.4，NFC，IP68 防尘防水</dd>
+          </div>
+          <div class="spec-row">
+            <dt>配色</dt>
+            <dd>曜石黑，月岩银，熔光橙</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section reserve" id="reserve" aria-labelledby="reserveTitle">
+      <div class="section-inner reserve-grid">
+        <div class="reserve-copy">
+          <h2 id="reserveTitle">下一部手机，<br>从更轻盈的一天开始。</h2>
+          <p>留下邮箱，获取 AERA ONE 的首发信息与线下体验邀请。我们会只在你需要的时候出现。</p>
+        </div>
+        <form class="reserve-form" id="reserveForm">
+          <label for="email">接收首发通知</label>
+          <div class="form-row">
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="你的邮箱地址" required>
+            <button class="button button--ink" type="submit">
+              完成预约
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </button>
+          </div>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-top">
+      <a class="footer-wordmark" href="#top" aria-label="返回页面顶部">AERA</a>
+      <div class="footer-links">
+        <div>
+          <strong>产品</strong>
+          <a href="#design">设计</a>
+          <a href="#camera">影像</a>
+          <a href="#display">屏幕</a>
+        </div>
+        <div>
+          <strong>了解</strong>
+          <a href="#specs">技术规格</a>
+          <a href="#reserve">预约体验</a>
+          <a href="#top">环境责任</a>
+        </div>
+        <div>
+          <strong>关注</strong>
+          <a href="#top">微信公众号</a>
+          <a href="#top">微博</a>
+          <a href="#top">小红书</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AERA Mobile. 本页面为品牌概念展示。</span>
+      <span>隐私政策 / 使用条款 / 无障碍声明</span>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const body = document.body;
+      const header = document.getElementById('siteHeader');
+      const menuToggle = document.getElementById('menuToggle');
+      const siteNav = document.getElementById('siteNav');
+      const scrollProgress = document.getElementById('scrollProgress');
+      const deviceStage = document.getElementById('deviceStage');
+      const phoneWrap = document.getElementById('phoneWrap');
+      const finishName = document.getElementById('finishName');
+      const finishButtons = [...document.querySelectorAll('.finish-option')];
+      const reserveForm = document.getElementById('reserveForm');
+      const formStatus = document.getElementById('formStatus');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const finePointer = window.matchMedia('(pointer: fine)');
+
+      requestAnimationFrame(() => body.classList.add('is-loaded'));
+
+      const setMenu = (open) => {
+        body.classList.toggle('nav-open', open);
+        menuToggle.setAttribute('aria-expanded', String(open));
+        menuToggle.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+      };
+
+      menuToggle.addEventListener('click', () => {
+        setMenu(!body.classList.contains('nav-open'));
+      });
+
+      siteNav.addEventListener('click', (event) => {
+        if (event.target.closest('a')) setMenu(false);
+      });
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 900) setMenu(false);
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') setMenu(false);
+      });
+
+      let scrollTicking = false;
+      const updateScroll = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const value = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+        scrollProgress.style.transform = `scaleX(${value})`;
+        header.style.background = window.scrollY > 24
+          ? 'rgba(241, 243, 237, 0.98)'
+          : 'rgba(241, 243, 237, 0.92)';
+        scrollTicking = false;
+      };
+
+      window.addEventListener('scroll', () => {
+        if (!scrollTicking) {
+          scrollTicking = true;
+          requestAnimationFrame(updateScroll);
+        }
+      }, { passive: true });
+      updateScroll();
+
+      finishButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          finishButtons.forEach((item) => item.setAttribute('aria-pressed', 'false'));
+          button.setAttribute('aria-pressed', 'true');
+          deviceStage.dataset.finish = button.dataset.finish;
+          finishName.textContent = button.dataset.name;
+        });
+      });
+
+      if (finePointer.matches && !reduceMotion.matches) {
+        const stageBounds = () => deviceStage.getBoundingClientRect();
+        deviceStage.addEventListener('pointermove', (event) => {
+          const rect = stageBounds();
+          const x = (event.clientX - rect.left) / rect.width - 0.5;
+          const y = (event.clientY - rect.top) / rect.height - 0.5;
+          phoneWrap.style.setProperty('--ry', `${x * 7}deg`);
+          phoneWrap.style.setProperty('--rx', `${y * -5}deg`);
+          phoneWrap.classList.add('is-tilting');
+        });
+        deviceStage.addEventListener('pointerleave', () => {
+          phoneWrap.style.setProperty('--ry', '0deg');
+          phoneWrap.style.setProperty('--rx', '0deg');
+          phoneWrap.classList.remove('is-tilting');
+        });
+      }
+
+      function sizeCanvas(canvas) {
+        const rect = canvas.getBoundingClientRect();
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        const width = Math.max(1, Math.round(rect.width * ratio));
+        const height = Math.max(1, Math.round(rect.height * ratio));
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
+        }
+        return { width, height, ratio };
+      }
+
+      function createScreenArt(canvas, options) {
+        const context = canvas.getContext('2d');
+        let frame = 0;
+        let active = true;
+        const speed = options.speed || 0.0016;
+
+        function draw(time = 0) {
+          if (!active || !context) return;
+          const { width, height } = sizeCanvas(canvas);
+          const t = time * speed;
+          const background = context.createLinearGradient(0, 0, width, height);
+          background.addColorStop(0, options.colors[0]);
+          background.addColorStop(0.58, options.colors[1]);
+          background.addColorStop(1, options.colors[2]);
+          context.fillStyle = background;
+          context.fillRect(0, 0, width, height);
+
+          context.save();
+          context.globalCompositeOperation = 'screen';
+          for (let i = 0; i < 5; i += 1) {
+            const y = height * (0.34 + i * 0.08) + Math.sin(t * 3 + i) * height * 0.035;
+            const glow = context.createLinearGradient(0, y, width, y);
+            const alpha = 0.045 + i * 0.012;
+            glow.addColorStop(0, `rgba(255,255,255,0)`);
+            glow.addColorStop(0.32 + Math.sin(t + i) * 0.08, `rgba(255,${options.warm ? 178 : 238},${options.warm ? 118 : 230},${alpha})`);
+            glow.addColorStop(0.68, `rgba(255,255,255,${alpha * 0.4})`);
+            glow.addColorStop(1, `rgba(255,255,255,0)`);
+            context.fillStyle = glow;
+            context.beginPath();
+            context.moveTo(-width * 0.08, y);
+            context.bezierCurveTo(
+              width * 0.2, y - height * (0.12 + i * 0.01),
+              width * 0.62, y + height * (0.15 - i * 0.01),
+              width * 1.08, y - height * 0.04
+            );
+            context.lineTo(width * 1.08, y + height * (0.03 + i * 0.008));
+            context.bezierCurveTo(
+              width * 0.7, y + height * (0.17 - i * 0.008),
+              width * 0.25, y - height * (0.05 + i * 0.008),
+              -width * 0.08, y + height * 0.05
+            );
+            context.closePath();
+            context.fill();
+          }
+          context.restore();
+
+          const vignette = context.createRadialGradient(
+            width * 0.5, height * 0.44, 0,
+            width * 0.5, height * 0.44, Math.max(width, height) * 0.72
+          );
+          vignette.addColorStop(0, 'rgba(0,0,0,0)');
+          vignette.addColorStop(1, options.night ? 'rgba(0,0,0,0.5)' : 'rgba(10,20,18,0.18)');
+          context.fillStyle = vignette;
+          context.fillRect(0, 0, width, height);
+
+          frame = requestAnimationFrame(draw);
+        }
+
+        if (reduceMotion.matches) {
+          draw(1000);
+          cancelAnimationFrame(frame);
+          return;
+        }
+
+        draw(0);
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              active = true;
+              cancelAnimationFrame(frame);
+              frame = requestAnimationFrame(draw);
+            } else {
+              active = false;
+              cancelAnimationFrame(frame);
+            }
+          });
+        }, { rootMargin: '180px' });
+        observer.observe(canvas);
+      }
+
+      const heroArt = {
+        colors: ['#0b120e', '#21453a', '#d55b31'],
+        warm: true,
+        night: true,
+        speed: 0.0012
+      };
+      createScreenArt(document.getElementById('heroCanvas'), heroArt);
+
+      createScreenArt(document.getElementById('displayCanvas'), {
+        colors: ['#06141a', '#155c65', '#e79c65'],
+        warm: true,
+        night: true,
+        speed: 0.001
+      });
+
+      reserveForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!reserveForm.reportValidity()) return;
+        const email = new FormData(reserveForm).get('email');
+        formStatus.textContent = `预约已记录，首发信息会发送至 ${email}`;
+        reserveForm.reset();
+      });
+
+      reduceMotion.addEventListener('change', () => {
+        if (reduceMotion.matches) {
+          phoneWrap.style.setProperty('--ry', '0deg');
+          phoneWrap.style.setProperty('--rx', '0deg');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

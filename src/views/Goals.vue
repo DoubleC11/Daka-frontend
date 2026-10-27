@@ -128,7 +128,7 @@ async function bump(g, delta) {
       deadline: g.deadline
     })
     Object.assign(g, updated)
-    if (updated.status === 2 && g.status !== 2) toast.ok(`「${g.title}」已达成 🎉`)
+    if (updated.status === 2 && g.status !== 2) toast.ok(`「${g.title}」已达成`)
   } catch (e) {
     toast.err(e.message)
   }
@@ -146,7 +146,7 @@ async function setStatus(g, status) {
       status
     })
     Object.assign(g, updated)
-    toast.ok(status === 2 ? '已标记完成 🎉' : status === 3 ? '已放弃该目标' : '已恢复进行中')
+    toast.ok(status === 2 ? '已标记完成' : status === 3 ? '已放弃该目标' : '已恢复进行中')
   } catch (e) {
     toast.err(e.message)
   }
@@ -185,7 +185,7 @@ onMounted(load)
       </div>
       <div class="card tile">
         <span class="tile__k">已完成</span>
-        <b class="tile__v" style="color: var(--c-emerald)">{{ summary.done }}</b>
+        <b class="tile__v" style="color: var(--ui-success)">{{ summary.done }}</b>
       </div>
       <div class="card tile">
         <span class="tile__k">平均进度</span>
@@ -212,7 +212,13 @@ onMounted(load)
 
       <div v-if="loading" class="empty">加载中…</div>
       <div v-else-if="!filtered.length" class="empty">
-        <span class="e-emoji">🎯</span>
+        <span class="empty__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="8.5" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </span>
         <b>还没有目标</b>
         点右上角创建第一个吧
       </div>
@@ -221,17 +227,17 @@ onMounted(load)
           :class="{ 'is-done': g.status === 2, 'is-off': g.status === 3 }">
           <header class="gcard__head">
             <span class="gcard__bar" :style="{ background: gcolor(g) }" />
-            <b class="gcard__title">{{ g.title }}</b>
+            <b class="gcard__title" :title="g.title">{{ g.title }}</b>
             <span class="chip" :class="STATUS[g.status]?.chip">{{ STATUS[g.status]?.label }}</span>
             <span class="spacer" />
             <button class="mini" @click="openEdit(g)">编辑</button>
           </header>
 
           <div class="gcard__nums">
-            <b :style="{ color: gcolor(g, '') }">{{ Number(g.currentValue || 0) }}</b>
+            <b>{{ Number(g.currentValue || 0) }}</b>
             <span class="gcard__of">/ {{ Number(g.targetValue || 0) }} {{ g.unit || '' }}</span>
             <span class="spacer" />
-            <span class="gcard__pct" :style="{ color: gcolor(g, '') }">{{ percent(g) }}%</span>
+            <span class="gcard__pct">{{ percent(g) }}%</span>
           </div>
 
           <div class="bar bar--thick gcard__barwrap">
@@ -244,10 +250,13 @@ onMounted(load)
             </span>
             <span class="spacer" />
             <div v-if="g.status === 1" class="bump">
-              <button class="bump__b" @click="bump(g, -1)">−</button>
-              <button class="bump__b bump__b--plus" :style="{ background: gcolor(g) }" @click="bump(g, 1)">＋1</button>
-              <button class="bump__b bump__b--done" @click="setStatus(g, 2)">达成</button>
-              <button class="bump__b bump__b--off" @click="setStatus(g, 3)">放弃</button>
+              <button class="bump__b" :aria-label="`${g.title}：进度减 1`" @click="bump(g, -1)">−</button>
+              <button class="bump__b bump__b--plus" :aria-label="`${g.title}：进度加 1`"
+                :style="{ background: gcolor(g) }" @click="bump(g, 1)">＋1</button>
+              <button class="bump__b bump__b--done" :aria-label="`将${g.title}标记为达成`"
+                @click="setStatus(g, 2)">达成</button>
+              <button class="bump__b bump__b--off" :aria-label="`放弃目标${g.title}`"
+                @click="setStatus(g, 3)">放弃</button>
             </div>
             <template v-else-if="g.status === 2">
               <button class="mini" @click="setStatus(g, 1)">重新开始</button>
@@ -286,6 +295,7 @@ onMounted(load)
           <span>主题色</span>
           <div class="swatches">
             <button v-for="c in PALETTE" :key="c" class="swatch" :class="{ 'is-on': form.color === c }"
+              :aria-label="`选择${c}色`" type="button"
               :style="{ background: `var(--c-${c}-g)` }" @click="form.color = c" />
           </div>
         </div>
@@ -303,16 +313,16 @@ onMounted(load)
 </template>
 
 <style scoped>
-.page { display: flex; flex-direction: column; gap: 14px; }
+.page { display: flex; flex-direction: column; gap: var(--ui-space-4); }
 
 .tile { display: flex; flex-direction: column; gap: 5px; }
-.tile__k { font-size: 11.5px; color: var(--t2); }
-.tile__v { font-size: 23px; font-weight: 600; letter-spacing: -0.7px; line-height: 1.15; }
+.tile__k { font-size: 12px; color: var(--t2); }
+.tile__v { font-family: var(--ui-font-data); font-size: 24px; font-weight: 650; letter-spacing: 0; line-height: 1.15; }
 .tile__u { font-size: 12px; font-weight: 400; color: var(--t3); font-style: normal; margin-left: 2px; }
 .tile--act { justify-content: center; }
 .tile__btn { align-self: flex-start; margin-top: 4px; }
 
-.head { margin-bottom: 14px; }
+.head { margin-bottom: var(--ui-space-3); }
 
 /* ---------- 目标卡 ---------- */
 .gl {
@@ -322,15 +332,16 @@ onMounted(load)
 }
 .gcard {
   padding: 15px 16px;
-  border-radius: 19px;
+  border: 1px solid transparent;
+  border-radius: var(--ui-radius);
   background: var(--card-soft);
   display: flex;
   flex-direction: column;
   gap: 11px;
-  transition: box-shadow 0.18s, transform 0.18s;
+  transition: border-color var(--ui-duration-fast) var(--ui-ease-out),
+    background-color var(--ui-duration-fast) var(--ui-ease-out);
 }
-.gcard:hover { box-shadow: 0 14px 30px -20px rgba(31, 41, 55, 0.6); transform: translateY(-1px); }
-.gcard.is-done { background: rgba(16, 185, 129, 0.07); }
+.gcard.is-done { background: var(--ui-accent-soft); }
 .gcard.is-off { opacity: 0.62; }
 .gcard__head { display: flex; align-items: center; gap: 8px; }
 .gcard__bar { width: 4px; height: 15px; border-radius: 3px; flex: 0 0 auto; }
@@ -342,8 +353,8 @@ onMounted(load)
   white-space: nowrap;
 }
 .gcard__nums { display: flex; align-items: baseline; gap: 6px; }
-.gcard__nums b { font-size: 22px; font-weight: 600; letter-spacing: -0.6px; }
-.gcard__of { font-size: 12px; color: var(--t3); }
+.gcard__nums b { font-family: var(--ui-font-data); font-size: 22px; font-weight: 650; letter-spacing: 0; }
+.gcard__of { min-width: 0; font-size: 12px; color: var(--t3); overflow-wrap: anywhere; }
 .gcard__pct { font-size: 13px; font-weight: 600; }
 .gcard__barwrap { height: 9px; border-radius: 5px; }
 .gcard__foot { display: flex; align-items: center; gap: 8px; }
@@ -353,43 +364,76 @@ onMounted(load)
 .bump__b {
   border: 1px solid var(--line-c);
   background: var(--card-solid);
-  border-radius: 10px;
+  border-radius: var(--ui-radius);
   padding: 5px 11px;
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--t2);
-  transition: all 0.15s;
+  transition: color var(--ui-duration-fast) var(--ui-ease-out),
+    border-color var(--ui-duration-fast) var(--ui-ease-out),
+    background-color var(--ui-duration-fast) var(--ui-ease-out);
 }
-.bump__b:hover { border-color: var(--t3); color: var(--t1); }
-.bump__b--plus { border-color: transparent; color: #fff; font-weight: 500; }
-.bump__b--plus:hover { color: #fff; transform: translateY(-1px); }
-.bump__b--done { border-color: transparent; background: var(--grad-fresh); color: #fff; }
-.bump__b--done:hover { color: #fff; }
-.bump__b--off:hover { color: var(--danger); border-color: var(--danger-line); }
+.bump__b--plus { border-color: transparent; color: #fff; font-weight: 600; }
+.bump__b--done { border-color: transparent; background: var(--ui-success); color: var(--ui-on-success); }
 
 .mini {
   border: none;
   background: transparent;
-  color: var(--c-indigo);
-  font-size: 11.5px;
+  color: var(--ui-accent);
+  font-size: 12px;
   padding: 3px 8px;
-  border-radius: 8px;
+  border-radius: var(--ui-radius-sm);
 }
-.mini:hover { background: rgba(99, 102, 241, 0.1); }
 
 /* ---------- 表单 ---------- */
 .form { display: flex; flex-direction: column; gap: 15px; }
 .form__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .swatches { display: flex; flex-wrap: wrap; gap: 8px; }
-.swatch { width: 28px; height: 28px; border-radius: 10px; border: 2px solid transparent; transition: transform 0.14s; }
-.swatch:hover { transform: scale(1.1); }
-.swatch.is-on { border-color: var(--card-solid); box-shadow: 0 0 0 2px var(--c-indigo); }
+.swatch { width: 28px; height: 28px; border-radius: var(--ui-radius); border: 2px solid transparent; transition: transform var(--ui-duration-fast) var(--ui-ease-out); }
+.swatch.is-on { border-color: var(--ui-surface); box-shadow: 0 0 0 2px var(--ui-accent); }
 .foot__del { color: var(--danger); border-color: var(--danger-line); }
+
+@media (hover: hover) and (pointer: fine) {
+  .gcard:hover { border-color: var(--ui-line-strong); }
+  .bump__b:hover { border-color: var(--t3); color: var(--t1); }
+  .bump__b--plus:hover { color: #fff; background: var(--ui-accent-hover); }
+  .bump__b--done:hover { color: var(--ui-on-success); }
+  .bump__b--off:hover { color: var(--danger); border-color: var(--danger-line); }
+  .mini:hover { background: var(--ui-accent-soft); }
+  .swatch:hover { transform: scale(1.1); }
+}
 
 @media (max-width: 1080px) {
   .grid.g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 520px) {
-  .grid.g4 { grid-template-columns: minmax(0, 1fr); }
+  .grid.g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gl { grid-template-columns: minmax(0, 1fr); }
+  .row--between.head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .row--between.head .seg {
+    width: 100%;
+  }
+  .row--between.head .seg__item {
+    flex: 1;
+    padding-inline: 8px;
+  }
+  .row--between.head > .row--between {
+    flex-wrap: wrap;
+  }
+  .bump__b {
+    min-height: 44px;
+  }
+  .gcard__nums,
+  .gcard__foot,
+  .bump {
+    flex-wrap: wrap;
+  }
+  .swatch {
+    width: 44px;
+    height: 44px;
+  }
   .form__row { grid-template-columns: minmax(0, 1fr); }
 }
 </style>

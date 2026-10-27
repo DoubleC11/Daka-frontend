@@ -43,14 +43,14 @@ const trendChart = computed(() => {
       symbol: 'circle',
       symbolSize: 5,
       data: trend.value.map((p) => p.done),
-      lineStyle: { width: 2.4, color: '#6366F1' },
-      itemStyle: { color: '#6366F1' },
+      lineStyle: { width: 2.4, color: '#4F46E5' },
+      itemStyle: { color: '#4F46E5' },
       areaStyle: {
         color: {
           type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
           colorStops: [
-            { offset: 0, color: 'rgba(99,102,241,0.28)' },
-            { offset: 1, color: 'rgba(99,102,241,0.02)' }
+            { offset: 0, color: 'rgba(79,70,229,0.28)' },
+            { offset: 1, color: 'rgba(79,70,229,0.02)' }
           ]
         }
       }
@@ -93,12 +93,12 @@ const monthlyChart = computed(() => {
     series: [
       {
         name: '收入', type: 'bar', barWidth: 13, barGap: '18%',
-        itemStyle: { borderRadius: [5, 5, 0, 0], color: '#EF4444' },
+        itemStyle: { borderRadius: [5, 5, 0, 0], color: P.income },
         data: monthly.value.map((m) => Number(m.income))
       },
       {
         name: '支出', type: 'bar', barWidth: 13,
-        itemStyle: { borderRadius: [5, 5, 0, 0], color: '#50B830' },
+        itemStyle: { borderRadius: [5, 5, 0, 0], color: P.expense },
         data: monthly.value.map((m) => Number(m.expense))
       }
     ]
@@ -147,13 +147,13 @@ const dailyChart = computed(() => {
       smooth: true,
       symbol: 'none',
       data: arr.map((d) => Number(d.expense)),
-      lineStyle: { width: 2.2, color: '#50B830' },
+      lineStyle: { width: 2.2, color: P.expense },
       areaStyle: {
         color: {
           type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
           colorStops: [
-            { offset: 0, color: 'rgba(5,150,105,0.24)' },
-            { offset: 1, color: 'rgba(5,150,105,0.02)' }
+            { offset: 0, color: P.expenseArea },
+            { offset: 1, color: P.expenseAreaFade }
           ]
         }
       }
@@ -247,40 +247,41 @@ onMounted(load)
     <!-- 打卡趋势 -->
     <section class="card">
       <div class="row--between head">
-        <h3 class="card-title">打卡趋势</h3>
+        <h2 class="card-title">打卡趋势</h2>
         <div class="seg">
           <button v-for="n in [7, 14, 30]" :key="n" class="seg__item" :class="{ 'seg__item--on': days === n }"
             @click="changeDays(n)">近 {{ n }} 天</button>
         </div>
       </div>
-      <EChart :option="trendChart" :height="250" />
+      <EChart :option="trendChart" :height="250" label="近段时间习惯打卡趋势" />
     </section>
 
     <div class="cols">
       <!-- 月度收支 -->
       <section class="card">
         <div class="row--between head">
-          <h3 class="card-title">近 6 个月收支</h3>
+          <h2 class="card-title">近 6 个月收支</h2>
           <span class="hint">收入 <b style="color: var(--income)">红</b> · 支出 <b style="color: var(--expense)">绿</b></span>
         </div>
-        <EChart :option="monthlyChart" :height="250" />
+        <EChart :option="monthlyChart" :height="250" label="近 6 个月收支趋势" />
       </section>
 
       <!-- 支出构成 -->
       <section class="card">
         <div class="row--between head">
-          <h3 class="card-title">本月支出构成</h3>
-          <input v-model="month" type="month" class="inp inp--mini inp--month" :max="thisMonth()" @change="changeMonth" />
+          <h2 class="card-title">本月支出构成</h2>
+          <input v-model="month" type="month" class="inp inp--mini inp--month"
+            aria-label="统计月份" :max="thisMonth()" @change="changeMonth" />
         </div>
         <div v-if="!bundle?.expenseByCategory?.length" class="empty">本月暂无支出</div>
-        <EChart v-else :option="expensePie" :height="250" />
+        <EChart v-else :option="expensePie" :height="250" label="本月支出分类占比" />
       </section>
     </div>
 
     <div class="cols">
       <!-- 习惯排行 -->
       <section class="card">
-        <h3 class="card-title head">习惯打卡排行（本月）</h3>
+        <h2 class="card-title head">习惯打卡排行（本月）</h2>
         <div v-if="!habitStats?.ranking?.length" class="empty">暂无数据</div>
         <ul v-else class="rank">
           <li v-for="(r, i) in habitStats.ranking" :key="r.name" class="rank__row">
@@ -300,7 +301,7 @@ onMounted(load)
 
       <!-- 心情分布 -->
       <section class="card">
-        <h3 class="card-title head">心情分布（本月）</h3>
+        <h2 class="card-title head">心情分布（本月）</h2>
         <div v-if="!diaryStats?.moods?.some((m) => m.count)" class="empty">本月暂无日记</div>
         <ul v-else class="moods">
           <li v-for="m in diaryStats.moods" :key="m.mood" class="moods__row">
@@ -320,32 +321,32 @@ onMounted(load)
     <!-- 当月每日支出 -->
     <section class="card">
       <div class="row--between head">
-        <h3 class="card-title">当月每日支出</h3>
+        <h2 class="card-title">当月每日支出</h2>
         <span class="hint">单位：元</span>
       </div>
       <div v-if="!bundle?.daily?.length" class="empty">暂无数据</div>
-      <EChart v-else :option="dailyChart" :height="210" />
+      <EChart v-else :option="dailyChart" :height="210" label="当月每日支出趋势" />
     </section>
   </div>
 </template>
 
 <style scoped>
-.page { display: flex; flex-direction: column; gap: 14px; }
+.page { display: flex; flex-direction: column; gap: var(--ui-space-4); }
 
 .tile { display: flex; flex-direction: column; gap: 5px; }
-.tile__k { font-size: 11.5px; color: var(--t2); }
-.tile__v { font-size: 22px; font-weight: 600; letter-spacing: -0.7px; line-height: 1.15; }
-.tile__f { font-size: 10.5px; color: var(--t3); }
+.tile__k { font-size: 12px; color: var(--t2); }
+.tile__v { font-family: var(--ui-font-data); font-size: 24px; font-weight: 650; letter-spacing: 0; line-height: 1.15; }
+.tile__f { font-size: 12px; color: var(--t3); }
 
-.head { margin-bottom: 12px; }
+.head { margin-bottom: var(--ui-space-3); }
 .cols {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: var(--ui-space-4);
   align-items: start;
 }
 
-.inp--mini { width: auto; padding: 6px 12px; font-size: 12px; border-radius: 10px; background: var(--card-soft); }
+.inp--mini { width: auto; padding: 6px 12px; font-size: 12px; border-radius: var(--ui-radius); background: var(--card-soft); }
 
 /* ---------- 排行 ---------- */
 .rank { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
@@ -353,18 +354,18 @@ onMounted(load)
 .rank__no {
   width: 21px;
   height: 21px;
-  border-radius: 7px;
+  border-radius: var(--ui-radius-sm);
   background: var(--track-c);
   color: var(--t2);
-  font-size: 11px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
 }
-.rank__no--1 { background: var(--grad-pop); color: #fff; }
-.rank__no--2 { background: var(--grad-primary); color: #fff; }
-.rank__no--3 { background: var(--grad-fresh); color: #fff; }
+.rank__no--1 { background: var(--ui-signal-coral-soft); color: var(--ui-signal-coral); }
+.rank__no--2 { background: var(--ui-accent-soft); color: var(--ui-accent); }
+.rank__no--3 { background: var(--ui-signal-blue-soft); color: var(--ui-signal-blue); }
 .rank__mid { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
 .rank__mid b { font-size: 12.5px; font-weight: 500; }
 
@@ -373,7 +374,7 @@ onMounted(load)
 .moods__row { display: flex; align-items: center; gap: 11px; }
 .moods__name { width: 40px; font-size: 12.5px; }
 .moods__bar { flex: 1; }
-.moods__bar i { background: var(--grad-fresh); }
+.moods__bar i { background: var(--ui-accent); }
 .moods__n { width: 26px; text-align: right; font-size: 12px; color: var(--t2); }
 .moods__foot { margin-top: 14px; }
 
@@ -384,6 +385,6 @@ onMounted(load)
   .cols { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 520px) {
-  .grid.g4 { grid-template-columns: minmax(0, 1fr); }
+  .grid.g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 </style>

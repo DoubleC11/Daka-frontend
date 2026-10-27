@@ -170,11 +170,11 @@ onMounted(load)
     <section class="card card--lg quick">
       <div class="quick__row">
         <span class="quick__mark">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2.6"
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6"
             stroke-linecap="round"><path d="M12 6v12M6 12h12" /></svg>
         </span>
         <input v-model="draft.title" class="quick__inp" placeholder="要做什么？回车即可添加"
-          @keyup.enter="add" maxlength="80" />
+          aria-label="新待办内容" enterkeyhint="done" @keyup.enter="add" maxlength="80" />
         <button class="btn btn--sm" :disabled="adding" @click="add">添加</button>
       </div>
       <div class="quick__opts">
@@ -213,13 +213,20 @@ onMounted(load)
 
       <div v-if="loading" class="empty">加载中…</div>
       <div v-else-if="!list.length" class="empty">
-        <span class="e-emoji">🎉</span>
+        <span class="empty__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 7h3l1.6 1.6L12 5.2M4 14h3l1.6 1.6L12 12.2M16 7.5h4M16 14.5h4" />
+          </svg>
+        </span>
         <b>{{ scope === 'done' ? '还没有已完成的待办' : '太棒了，全部搞定' }}</b>
         {{ scope === 'done' ? '完成一个待办后会出现在这里' : '在上方输入框添加新待办' }}
       </div>
       <ul v-else class="td">
         <li v-for="t in list" :key="t.id" class="td__row" :class="{ 'is-done': t.done }">
-          <button class="td__box" :class="{ 'is-on': t.done }" :disabled="busy === t.id" @click="toggle(t)">
+          <button class="td__box" :class="{ 'is-on': t.done }" type="button"
+            :aria-label="`${t.title}：${t.done ? '标记为未完成' : '标记为已完成'}`"
+            :disabled="busy === t.id" @click="toggle(t)">
             <svg v-if="t.done" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" stroke-width="3.2"
               stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7" /></svg>
           </button>
@@ -227,7 +234,7 @@ onMounted(load)
           <div class="td__mid">
             <div class="td__top">
               <b>{{ t.title }}</b>
-              <span v-if="t.tag" class="chip chip--outline">{{ t.tag }}</span>
+              <span v-if="t.tag" class="chip chip--outline" :title="t.tag">{{ t.tag }}</span>
             </div>
             <div class="td__meta">
               <span v-if="t.dueDate" class="hint"
@@ -235,7 +242,14 @@ onMounted(load)
                 {{ relativeDate(t.dueDate) }}
               </span>
               <span v-if="t.dueDate && t.goalId" class="hint">·</span>
-              <span v-if="t.goalId" class="hint">🎯 {{ goalMap[t.goalId]?.title || '目标' }}</span>
+              <span v-if="t.goalId" class="hint hint--icon">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="7.5" />
+                  <circle cx="12" cy="12" r="2.5" />
+                </svg>
+                {{ goalMap[t.goalId]?.title || '目标' }}
+              </span>
             </div>
           </div>
 
@@ -252,7 +266,7 @@ onMounted(load)
       <Transition name="fade">
         <div v-if="editing" class="mask" @click.self="editing = null">
           <div class="sheet">
-            <h3 class="sheet__t">编辑待办</h3>
+            <h2 class="sheet__t">编辑待办</h2>
             <label class="field">
               <span>内容</span>
               <input v-model="editForm.title" class="inp" maxlength="80" />
@@ -293,7 +307,7 @@ onMounted(load)
 </template>
 
 <style scoped>
-.page { display: flex; flex-direction: column; gap: 14px; }
+.page { display: flex; flex-direction: column; gap: var(--ui-space-4); }
 
 /* ---------- 快速添加 ---------- */
 .quick { display: flex; flex-direction: column; gap: 13px; }
@@ -301,13 +315,14 @@ onMounted(load)
 .quick__mark {
   width: 34px;
   height: 34px;
-  border-radius: 12px;
-  background: var(--grad-primary);
+  border-radius: var(--ui-radius);
+  background: var(--ui-accent);
+  color: var(--ui-on-accent);
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  box-shadow: 0 10px 20px -12px rgba(99, 102, 241, 0.9);
+  box-shadow: none;
 }
 .quick__inp {
   flex: 1;
@@ -320,9 +335,9 @@ onMounted(load)
 .quick__inp::placeholder { color: var(--t3); }
 .quick__opts { display: flex; flex-wrap: wrap; gap: 16px; padding-left: 45px; }
 .quick__opt { display: flex; align-items: center; gap: 7px; }
-.quick__opt > span { font-size: 11.5px; color: var(--t2); }
+.quick__opt > span { font-size: 12px; color: var(--t2); }
 
-.head { margin-bottom: 12px; }
+.head { margin-bottom: var(--ui-space-3); }
 
 /* ---------- 列表 ---------- */
 .td { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
@@ -337,51 +352,57 @@ onMounted(load)
 .td__box {
   width: 23px;
   height: 23px;
-  border-radius: 8px;
+  border-radius: var(--ui-radius-sm);
   border: 1.7px solid var(--line-c);
   background: var(--card-solid);
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  transition: all 0.16s;
+  transition: background-color var(--ui-duration-fast) var(--ui-ease-out),
+    border-color var(--ui-duration-fast) var(--ui-ease-out),
+    transform var(--ui-duration-fast) var(--ui-ease-out);
 }
-.td__box:hover { border-color: var(--c-indigo); }
 .td__box.is-on {
-  background: var(--grad-fresh);
+  background: var(--ui-accent);
   border-color: transparent;
-  box-shadow: 0 8px 16px -10px rgba(34, 211, 238, 0.9);
+  box-shadow: none;
 }
 .td__mid { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .td__top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.td__top .chip {
+  max-width: 100%;
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .td__top b { font-size: 13px; font-weight: 500; word-break: break-word; }
 .is-done .td__top b { color: var(--t3); text-decoration: line-through; }
-.td__meta { display: flex; align-items: center; gap: 5px; }
+.td__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; min-width: 0; }
+.hint--icon { display: inline-flex; align-items: center; gap: 4px; min-width: 0; overflow-wrap: anywhere; }
 .is-over { color: var(--danger); }
 .td__acts { display: flex; gap: 2px; opacity: 0; transition: opacity 0.16s; }
-.td__row:hover .td__acts { opacity: 1; }
+.td__row:focus-within .td__acts { opacity: 1; }
 
 .mini {
   border: none;
   background: transparent;
-  color: var(--c-indigo);
-  font-size: 11.5px;
+  color: var(--ui-accent);
+  font-size: 12px;
   padding: 3px 8px;
-  border-radius: 8px;
+  border-radius: var(--ui-radius-sm);
 }
-.mini:hover { background: rgba(99, 102, 241, 0.1); }
 .mini--del { color: var(--danger); }
-.mini--del:hover { background: rgba(220, 38, 38, 0.09); }
 
-.inp--mini { width: auto; padding: 6px 12px; font-size: 12px; border-radius: 10px; background: var(--card-soft); }
+.inp--mini { width: auto; padding: 6px 12px; font-size: 12px; border-radius: var(--ui-radius); background: var(--card-soft); }
 
 /* ---------- 编辑浮层 ---------- */
 .mask {
   position: fixed;
   inset: 0;
   z-index: 150;
-  background: var(--mask-c);
-  backdrop-filter: blur(4px);
+  background: var(--ui-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -390,10 +411,11 @@ onMounted(load)
 .sheet {
   width: 430px;
   max-width: 94vw;
-  background: var(--card-solid);
-  border-radius: 22px;
+  border: 1px solid var(--ui-line);
+  background: var(--ui-surface);
+  border-radius: var(--ui-radius-lg);
   padding: 20px 22px 18px;
-  box-shadow: 0 30px 70px -24px rgba(17, 24, 39, 0.5);
+  box-shadow: 0 20px 48px -28px rgba(15, 23, 42, 0.42);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -403,9 +425,39 @@ onMounted(load)
 .sheet__foot { display: flex; align-items: center; gap: 9px; margin-top: 4px; }
 .foot__del { color: var(--danger); border-color: var(--danger-line); }
 
+@media (hover: hover) and (pointer: fine) {
+  .td__box:hover { border-color: var(--ui-accent); }
+  .td__row:hover .td__acts { opacity: 1; }
+  .mini:hover { background: var(--ui-accent-soft); }
+  .mini--del:hover { background: var(--ui-signal-coral-soft); }
+}
+
 @media (max-width: 620px) {
-  .quick__opts { padding-left: 0; }
+  .quick__opts { display: grid; grid-template-columns: minmax(0, 1fr); padding-left: 0; }
+  .quick__opt { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; }
+  .quick__opt .inp--mini { width: 100%; min-width: 0; }
   .td__acts { opacity: 1; }
   .sheet__row { grid-template-columns: minmax(0, 1fr); }
+  .row--between.head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .row--between.head .seg {
+    width: 100%;
+  }
+  .row--between.head .seg__item {
+    flex: 1;
+    padding-inline: 8px;
+  }
+  .row--between.head > .row--between {
+    flex-wrap: wrap;
+  }
+  .td__top b {
+    flex: 1 1 100%;
+  }
+  .td__box {
+    width: 44px;
+    height: 44px;
+  }
 }
 </style>

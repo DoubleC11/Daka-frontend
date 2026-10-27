@@ -16,16 +16,30 @@ echarts.use([
 
 const props = defineProps({
   option: { type: Object, required: true },
-  height: { type: [Number, String], default: 240 }
+  height: { type: [Number, String], default: 240 },
+  label: { type: String, default: '数据图表' }
 })
 
 const el = ref(null)
 const chart = shallowRef(null)
 let ro = null
+const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')
 
 function render() {
   if (!chart.value) return
-  chart.value.setOption(props.option, true)
+  chart.value.setOption(
+    {
+      animation: !reduceMotion?.matches,
+      animationDuration: 240,
+      animationDurationUpdate: 180,
+      ...props.option
+    },
+    true
+  )
+}
+
+function onMotionChange() {
+  render()
 }
 
 onMounted(() => {
@@ -33,6 +47,7 @@ onMounted(() => {
   render()
   ro = new ResizeObserver(() => chart.value?.resize())
   ro.observe(el.value)
+  reduceMotion?.addEventListener?.('change', onMotionChange)
 })
 
 watch(() => props.option, render, { deep: true })
@@ -40,11 +55,13 @@ watch(() => props.option, render, { deep: true })
 onBeforeUnmount(() => {
   ro?.disconnect()
   chart.value?.dispose()
+  reduceMotion?.removeEventListener?.('change', onMotionChange)
 })
 </script>
 
 <template>
-  <div ref="el" class="chart" :style="{ height: typeof height === 'number' ? height + 'px' : height }" />
+  <div ref="el" class="chart" role="img" :aria-label="label"
+    :style="{ height: typeof height === 'number' ? height + 'px' : height }" />
 </template>
 
 <style scoped>

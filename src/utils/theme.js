@@ -22,6 +22,9 @@ const isDark = computed(() =>
 
 function apply() {
   document.documentElement.dataset.theme = isDark.value ? 'dark' : 'light'
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute('content', isDark.value ? '#0E1116' : '#F6F7FC')
 }
 
 watchEffect(apply)
@@ -42,11 +45,15 @@ export function useTheme() {
 export function chartPalette() {
   const dark = isDark.value
   return {
-    axisLine: dark ? '#2B3140' : '#EDEDF3',
-    splitLine: dark ? '#242A38' : '#F3F3F8',
-    label: dark ? '#8B93A5' : '#9CA3AF',
-    legend: dark ? '#9CA3AF' : '#6B7280',
-    muted: dark ? '#3A4152' : '#CBD5E1',
-    pieBorder: dark ? '#1B2029' : '#FFFFFF'
+    axisLine: dark ? '#2B3140' : '#DCE3ED',
+    splitLine: dark ? '#2A3543' : '#EDF0FA',
+    label: dark ? '#A8B4C4' : '#626B86',
+    legend: dark ? '#B8C2D0' : '#5F6B7D',
+    muted: dark ? '#46556A' : '#A8B4C4',
+    pieBorder: dark ? '#151B24' : '#FFFFFF',
+    income: dark ? '#F87171' : '#DC2626',
+    expense: dark ? '#6ED44F' : '#2E7D32',
+    expenseArea: dark ? 'rgba(110,212,79,0.22)' : 'rgba(46,125,50,0.18)',
+    expenseAreaFade: dark ? 'rgba(110,212,79,0.02)' : 'rgba(46,125,50,0.02)'
   }
 }

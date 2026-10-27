@@ -9,6 +9,19 @@ import ConfirmModal from '../components/ConfirmModal.vue'
 import EChart from '../components/EChart.vue'
 
 const COLOR_KEYS = ['violet', 'sky', 'emerald', 'amber', 'orange', 'pink', 'rose', 'teal', 'cyan', 'indigo', 'gray']
+const graphemeSegmenter =
+  typeof Intl !== 'undefined' && Intl.Segmenter
+    ? new Intl.Segmenter(undefined, { granularity: 'grapheme' })
+    : null
+
+function firstGlyph(value, fallback = '·') {
+  const text = String(value ?? '').trim()
+  if (!text) return fallback
+  if (graphemeSegmenter) {
+    return [...graphemeSegmenter.segment(text)][0]?.segment || fallback
+  }
+  return Array.from(text)[0] || fallback
+}
 
 const loading = ref(true)
 const bills = ref([])
@@ -178,14 +191,14 @@ const balanceChart = computed(() => {
       smooth: true,
       symbol: 'none',
       data: arr.map((p) => Number(p.balance)),
-      lineStyle: { width: 2.4, color: '#6366F1' },
-      itemStyle: { color: '#6366F1' },
+      lineStyle: { width: 2.4, color: '#4F46E5' },
+      itemStyle: { color: '#4F46E5' },
       areaStyle: {
         color: {
           type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
           colorStops: [
-            { offset: 0, color: 'rgba(99,102,241,0.28)' },
-            { offset: 1, color: 'rgba(99,102,241,0.02)' }
+            { offset: 0, color: 'rgba(79,70,229,0.28)' },
+            { offset: 1, color: 'rgba(79,70,229,0.02)' }
           ]
         }
       },
@@ -317,7 +330,7 @@ async function addCategory() {
       name,
       type: catForm.value.type,
       color: catForm.value.color,
-      iconText: catForm.value.iconText.trim() || name.slice(0, 1)
+      iconText: catForm.value.iconText.trim() || firstGlyph(name)
     })
     cats.value[catForm.value.type] = [...cats.value[catForm.value.type], c]
     catForm.value = { name: '', type: catForm.value.type, color: 'violet', iconText: '' }
@@ -382,7 +395,8 @@ onMounted(() => {
       </div>
       <div class="card tile tile--act">
         <span class="tile__k">当前月份</span>
-        <input v-model="month" type="month" class="inp inp--mini inp--month" :max="thisMonth()" @change="load" />
+        <input v-model="month" type="month" class="inp inp--mini inp--month"
+          aria-label="记账月份" :max="thisMonth()" @change="load" />
         <button class="btn btn--sm tile__btn" @click="openCreate">+ 记一笔</button>
         <button class="mini" :disabled="exporting" @click="doExport">导出本月 CSV</button>
       </div>
@@ -392,7 +406,7 @@ onMounted(() => {
     <section class="card">
       <div class="row--between head">
         <div>
-          <h3 class="card-title">余额趋势</h3>
+          <h2 class="card-title">余额趋势</h2>
           <span class="hint trend__hint">累计结余 · 近 {{ trendDays }} 天<template v-if="trend.length">（期初 ¥{{ money(trendStart) }}）</template></span>
         </div>
         <div class="seg">
@@ -403,7 +417,12 @@ onMounted(() => {
 
       <div v-if="trendLoading" class="sk trend__sk" />
       <div v-else-if="!trendHasData" class="empty">
-        <span class="e-emoji">💸</span>
+        <span class="empty__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19V9M10 19V5M16 19v-7M22 19H2" />
+          </svg>
+        </span>
         <b>这段时间还没有记账</b>
         换成 90 天看看，或点上方「记一笔」开始
       </div>
@@ -422,7 +441,7 @@ onMounted(() => {
           <span class="chip">日均 {{ trendUp ? '+' : '-' }}¥{{ money(Math.abs(trendAvg)) }}</span>
           <span class="trend__legend"><i />累计结余（元）</span>
         </div>
-        <EChart :option="balanceChart" :height="240" />
+        <EChart :option="balanceChart" :height="240" label="近段时间累计结余趋势" />
       </template>
     </section>
 
@@ -436,13 +455,19 @@ onMounted(() => {
           </div>
           <div class="filters">
             <button class="mini" @click="showCat = true">管理分类</button>
-            <input v-model="keyword" class="inp inp--mini inp--search" placeholder="搜索事项" @keyup.enter="load" />
+            <input v-model="keyword" class="inp inp--mini inp--search" placeholder="搜索事项"
+              aria-label="搜索记账事项" enterkeyhint="search" @keyup.enter="load" />
           </div>
         </div>
 
         <div v-if="loading" class="empty">加载中…</div>
         <div v-else-if="!bills.length" class="empty">
-          <span class="e-emoji">🫙</span>
+          <span class="empty__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 4h14v17l-3-2-2 2-2-2-2 2-2-2-3 2zM8 9h8M8 13h6" />
+            </svg>
+          </span>
           <b>本月还没有{{ type === 2 ? '支出' : '收入' }}记录</b>
           点右上角「记一笔」添加
         </div>
@@ -457,11 +482,13 @@ onMounted(() => {
             <ul class="bl">
               <li v-for="b in gp.items" :key="b.id" class="bl__row">
                 <span class="icon-box icon-box--sm" :style="{ background: catGrad({ color: b.categoryColor }) }">
-                  {{ b.categoryIcon || b.categoryName?.slice(0, 1) }}
+                  {{ b.categoryIcon || firstGlyph(b.categoryName) }}
                 </span>
                 <span class="bl__mid">
                   <b>{{ b.title }}</b>
-                  <i>{{ b.categoryName }}<template v-if="b.note"> · {{ b.note }}</template></i>
+                  <i :title="`${b.categoryName || '未分类'}${b.note ? ' · ' + b.note : ''}`">
+                    {{ b.categoryName }}<template v-if="b.note"> · {{ b.note }}</template>
+                  </i>
                 </span>
                 <span class="bl__amt" :class="b.type === 1 ? 'is-income' : 'is-expense'">
                   {{ b.type === 1 ? '+' : '-' }}{{ money(b.amount) }}
@@ -477,16 +504,16 @@ onMounted(() => {
       <div class="side-col">
         <section class="card">
           <div class="row--between head">
-            <h3 class="card-title">{{ type === 2 ? '支出' : '收入' }}构成</h3>
+            <h2 class="card-title">{{ type === 2 ? '支出' : '收入' }}构成</h2>
             <span class="hint">合计 ¥{{ money(totalByCat) }}</span>
           </div>
           <div v-if="!byCat.length" class="empty">暂无数据</div>
           <template v-else>
-            <EChart :option="donut" :height="196" />
+            <EChart :option="donut" :height="196" :label="`${type === 2 ? '支出' : '收入'}分类占比`" />
             <ul class="cs">
               <li v-for="c in byCat" :key="c.categoryId" class="cs__row">
                 <span class="icon-box icon-box--sm" :style="{ background: catGrad(c) }">
-                  {{ c.iconText || c.name?.slice(0, 1) }}
+                  {{ c.iconText || firstGlyph(c.name) }}
                 </span>
                 <span class="cs__mid">
                   <span class="row--between">
@@ -524,7 +551,7 @@ onMounted(() => {
             <button v-for="c in curCats" :key="c.id" class="catcell"
               :class="{ 'is-on': form.categoryId === c.id }" @click="pickCat(c)"
               @contextmenu.prevent="delCategory(c)">
-              <span class="catcell__ico" :style="{ background: catGrad(c) }">{{ c.iconText || c.name.slice(0, 1) }}</span>
+              <span class="catcell__ico" :style="{ background: catGrad(c) }">{{ c.iconText || firstGlyph(c.name) }}</span>
               <span class="catcell__n">{{ c.name }}</span>
             </button>
           </div>
@@ -559,16 +586,18 @@ onMounted(() => {
     <Modal v-model="showCat" title="分类管理" width="460px">
       <div class="catman">
         <div class="catman__add">
-          <input v-model="catForm.name" class="inp" placeholder="新分类名称" maxlength="10" />
-          <input v-model="catForm.iconText" class="inp catman__ico" placeholder="图标字" maxlength="2" />
-          <select v-model.number="catForm.type" class="inp catman__type">
+          <input v-model="catForm.name" class="inp" placeholder="新分类名称" aria-label="新分类名称" maxlength="10" />
+          <input v-model="catForm.iconText" class="inp catman__ico" placeholder="图标字"
+            aria-label="新分类图标文字" maxlength="2" />
+          <select v-model.number="catForm.type" class="inp catman__type" aria-label="分类类型">
             <option :value="2">支出</option>
             <option :value="1">收入</option>
           </select>
           <button class="btn btn--sm" @click="addCategory">添加</button>
         </div>
         <div class="swatches">
-          <button v-for="c in COLOR_KEYS" :key="c" class="swatch" :class="{ 'is-on': catForm.color === c }"
+              <button v-for="c in COLOR_KEYS" :key="c" class="swatch" :class="{ 'is-on': catForm.color === c }"
+                :aria-label="`选择${c}色`" type="button"
             :style="{ background: `var(--c-${c}-g)` }" @click="catForm.color = c" />
         </div>
 
@@ -578,7 +607,8 @@ onMounted(() => {
             <div class="catman__chips">
               <span v-for="c in cats[t]" :key="c.id" class="chip" :class="c.userId == null ? '' : 'chip--on'">
                 {{ c.iconText }} {{ c.name }}
-                <button v-if="c.userId != null" class="catman__x" @click="delCategory(c)">×</button>
+                <button v-if="c.userId != null" class="catman__x" type="button"
+                  :aria-label="`删除分类 ${c.name}`" @click="delCategory(c)">×</button>
               </span>
             </div>
           </div>
@@ -592,27 +622,27 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.page { display: flex; flex-direction: column; gap: 14px; }
+.page { display: flex; flex-direction: column; gap: var(--ui-space-4); }
 
 /* ---------- 汇总砖 ---------- */
 .tile { display: flex; flex-direction: column; gap: 5px; position: relative; overflow: hidden; }
 .tile__k { font-size: 12px; color: var(--t2); }
-.tile__v { font-size: 22px; font-weight: 600; letter-spacing: -0.7px; line-height: 1.15; }
+.tile__v { font-family: var(--ui-font-data); font-size: 24px; font-weight: 650; letter-spacing: 0; line-height: 1.15; }
 .tile__f { font-size: 12px; color: var(--t3); }
 .tile--income .tile__v { color: var(--income); }
 .tile--expense .tile__v { color: var(--expense); }
 .tile--act { justify-content: center; }
 .tile__btn { align-self: flex-start; margin-top: 4px; }
-.inp--mini { width: auto; padding: 6px 12px; font-size: 12px; border-radius: 10px; background: var(--card-soft); }
+.inp--mini { width: auto; padding: 6px 12px; font-size: 12px; border-radius: var(--ui-radius); background: var(--card-soft); }
 
 .cols {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
-  gap: 14px;
+  gap: var(--ui-space-4);
   align-items: start;
 }
-.side-col { display: flex; flex-direction: column; gap: 14px; }
-.head { margin-bottom: 12px; }
+.side-col { display: flex; flex-direction: column; gap: var(--ui-space-4); }
+.head { margin-bottom: var(--ui-space-3); }
 .filters { display: flex; align-items: center; gap: 8px; }
 .inp--search { width: 132px; }
 
@@ -649,9 +679,9 @@ onMounted(() => {
 .cs { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
 .cs__row { display: flex; align-items: center; gap: 10px; }
 .cs__mid { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
-.cs__mid b { font-size: 12.5px; font-weight: 500; }
-.cs__amt { font-size: 12px; font-weight: 600; }
-.cs__r { font-size: 12px; color: var(--t3); width: 42px; text-align: right; }
+.cs__mid .row--between b { min-width: 0; overflow-wrap: anywhere; }
+.cs__amt { flex: 0 0 auto; font-size: 12px; font-weight: 600; }
+.cs__r { flex: 0 0 auto; font-size: 12px; color: var(--t3); width: 42px; text-align: right; }
 
 /* ---------- 余额趋势 ---------- */
 .trend__nums {
@@ -665,13 +695,13 @@ onMounted(() => {
 .trend__v {
   font-size: 26px;
   font-weight: 600;
-  letter-spacing: -0.8px;
+  letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
 .trend__v2 {
   font-size: 19px;
   font-weight: 600;
-  letter-spacing: -0.4px;
+  letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
 .trend__legend {
@@ -686,9 +716,9 @@ onMounted(() => {
   width: 10px;
   height: 10px;
   border-radius: 3px;
-  background: var(--c-indigo);
+  background: var(--ui-accent);
 }
-.trend__sk { height: 240px; border-radius: var(--r-tile); margin-top: 16px; }
+.trend__sk { height: 240px; border-radius: var(--ui-radius); margin-top: 16px; }
 
 .sk {
   background: linear-gradient(100deg, var(--sk-a) 30%, var(--sk-b) 50%, var(--sk-a) 70%);
@@ -707,7 +737,7 @@ onMounted(() => {
   align-items: center;
   gap: 6px;
   padding: 12px 18px;
-  border-radius: 18px;
+  border-radius: var(--ui-radius);
   background: var(--card-soft);
 }
 .amount__cur { font-size: 20px; color: var(--t3); }
@@ -717,7 +747,8 @@ onMounted(() => {
   background: transparent;
   font-size: 30px;
   font-weight: 600;
-  letter-spacing: -1px;
+  letter-spacing: 0;
+  min-height: 44px;
   min-width: 0;
 }
 .catgrid {
@@ -732,17 +763,17 @@ onMounted(() => {
   align-items: center;
   gap: 5px;
   padding: 9px 4px;
-  border-radius: 14px;
+  border-radius: var(--ui-radius);
   border: 1.5px solid transparent;
   background: var(--card-soft);
-  transition: all 0.15s;
+  transition: background-color var(--ui-duration-fast) var(--ui-ease-out),
+    border-color var(--ui-duration-fast) var(--ui-ease-out);
 }
-.catcell:hover { background: var(--hover-c); }
-.catcell.is-on { border-color: var(--c-indigo); background: rgba(99, 102, 241, 0.08); }
+.catcell.is-on { border-color: var(--ui-accent); background: var(--ui-accent-soft); }
 .catcell__ico {
   width: 32px;
   height: 32px;
-  border-radius: 11px;
+  border-radius: var(--ui-radius-sm);
   color: #fff;
   font-size: 12.5px;
   font-weight: 500;
@@ -758,9 +789,8 @@ onMounted(() => {
 .catman__ico { width: 78px; }
 .catman__type { width: 84px; }
 .swatches { display: flex; flex-wrap: wrap; gap: 8px; }
-.swatch { width: 26px; height: 26px; border-radius: 9px; border: 2px solid transparent; transition: transform 0.14s; }
-.swatch:hover { transform: scale(1.1); }
-.swatch.is-on { border-color: var(--card-solid); box-shadow: 0 0 0 2px var(--c-indigo); }
+.swatch { width: 26px; height: 26px; border-radius: var(--ui-radius-sm); border: 2px solid transparent; transition: transform var(--ui-duration-fast) var(--ui-ease-out); }
+.swatch.is-on { border-color: var(--ui-surface); box-shadow: 0 0 0 2px var(--ui-accent); }
 .catman__list { display: flex; flex-direction: column; gap: 12px; }
 .catman__group { display: flex; flex-direction: column; gap: 8px; }
 .catman__gt { font-size: 12px; color: var(--t2); }
@@ -774,19 +804,24 @@ onMounted(() => {
   padding: 0 2px;
   opacity: 0.7;
 }
-.catman__x:hover { opacity: 1; }
 
 .mini {
   border: none;
   background: transparent;
-  color: var(--c-indigo);
+  color: var(--ui-accent);
   font-size: 12px;
   padding: 3px 8px;
-  border-radius: 8px;
+  border-radius: var(--ui-radius-sm);
   white-space: nowrap;
 }
-.mini:hover { background: rgba(99, 102, 241, 0.1); }
 .foot__del { color: var(--danger); border-color: var(--danger-line); }
+
+@media (hover: hover) and (pointer: fine) {
+  .catcell:hover { background: var(--hover-c); }
+  .swatch:hover { transform: scale(1.1); }
+  .catman__x:hover { opacity: 1; }
+  .mini:hover { background: var(--ui-accent-soft); }
+}
 
 @media (max-width: 1080px) {
   .grid.g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -796,9 +831,44 @@ onMounted(() => {
   .trend__legend { margin-left: 0; }
 }
 @media (max-width: 520px) {
-  .grid.g4 { grid-template-columns: minmax(0, 1fr); }
+  .grid.g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .form__row { grid-template-columns: minmax(0, 1fr); }
+  .catman__add {
+    display: grid;
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 8px;
+  }
+  .catman__add > .inp:first-child {
+    grid-column: 1 / -1;
+  }
+  .catman__add .catman__ico,
+  .catman__add .catman__type {
+    width: 100%;
+  }
+  .catman__add > .btn {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
   .filters { flex-direction: column; align-items: stretch; }
   .inp--search { width: 100%; }
+  .row--between.head {
+    flex-wrap: wrap;
+  }
+  .row--between.head > .seg {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .row--between.head .seg__item {
+    flex: 1;
+    padding-inline: 8px;
+  }
+  .swatch {
+    width: 44px;
+    height: 44px;
+  }
+  .catman__x {
+    min-width: 32px;
+    min-height: 32px;
+  }
 }
 </style>
